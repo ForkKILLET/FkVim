@@ -1,7 +1,10 @@
 mkdir -p ~/.vim
-ln -s ./vimrc ~/.vim/vimrc
+rm -f ~/.vim/vimrc
+ln -s ~/_/FkVim/vimrc ~/.vim/vimrc
 
 mkdir -p ~/.vim/bundle
-ln -s ./vimrc/javascript ~/.vim/bundle/javascript
+rm -f ~/.vim/bundle/javascript
+ln -s ~/_/FkVim/vimrc/javascript ~/.vim/bundle/javascript
 
+echo "Welcome home: Vim."
 
