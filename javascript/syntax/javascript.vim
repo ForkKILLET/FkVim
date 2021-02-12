@@ -20,7 +20,7 @@ sy keyword javaScriptDefineException        reject error err
 sy keyword javaScriptAsync                  yield async await
 sy keyword javaScriptClass                  class constructor get set static extends
 sy keyword javaScriptScope                  this that super global window arguments prototype
-sy keyword javaScriptGlobalObjects          Array Boolean Date Function Math Number Object RegExp String Symbol Promise
+sy keyword javaScriptGlobalObjects          Array Boolean Date Function Math JSON Number Object RegExp String Symbol Promise
 sy keyword javaScriptGlobalLiteral          NaN Infinity
 
 sy keyword javaScriptOperatorKeyword        delete new instanceof typeof void
@@ -37,8 +37,8 @@ sy keyword javaScriptLabel                  case default
 
 sy keyword javaScriptDebug                  console debugger
 
-sy keyword javaScriptCommentTodo            TODO FIXME XXX TBD contained
-sy match   javaScriptLineComment            "\/\/.*" contains=@Spell,javaScriptCommentTodo
+sy keyword javaScriptCommentTodo            TODO FIXME XXX contained
+sy match   javaScriptCommentLine            "\/\/.*" contains=@Spell,javaScriptCommentTodo
 sy match   javaScriptCommentSkip            "^[ \t]*\*\($\|[ \t]\+\)"
 sy region  javaScriptComment                start="/\*"  end="\*/" contains=@Spell,javaScriptCommentTodo
 

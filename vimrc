@@ -7,8 +7,6 @@ inor	<C-Z> <ESC>ua
 nnor	ve :vnew $VIMRC<CR> 
 nnor	vs :source $VIMRC<CR> 
 
-set		clipboard^=unnamed,unnamedplus
-
 set		hlsearch
 nnor	<silent> <ESC>/ :set hlsearch!<CR>
 
@@ -18,6 +16,7 @@ nnor	Q :q<CR>
 nnor	S :w<CR>
 nnor	Sq :wq<CR>
 nnor	Sg :w<CR>:!gulp<CR>
+nnor	Sgg :w<CR>:!gulp 
 
 set		shiftwidth=4
 set		tabstop=4
@@ -94,7 +93,7 @@ hi javaScriptSpecial                ctermfg=99
 hi javaScriptDebug                  ctermfg=238             cterm=underline
 
 hi javaScriptShebang                ctermfg=19              cterm=bold,underline
-hi javaScriptLineComment            ctermfg=20              cterm=bold
+hi javaScriptCommentLine            ctermfg=20              cterm=bold
 hi javaScriptComment                ctermfg=20              cterm=bold
 hi javaScriptCommentTodo            ctermfg=233             cterm=bold,underline
 
@@ -272,82 +271,9 @@ endfun
 " JS
 
 fun! JS()
-	" eslint
-
 	" Abbreviate
 
 	iabb cl( console.log()<Left>
-
-	" Syntax
-	setl iskeyword+=$
-
-	sy clear
-	sy sync fromstart
-	
-	sy match   javaScriptShebang                "^#!.*"
-	
-	sy keyword javaScriptModule                 import export as
-	sy keyword javaScriptCommonModule           module exports require
-	
-	sy keyword javaScriptDefine                 let const var
-	sy keyword javaScriptDefineProper           resolve then res
-	sy keyword javaScriptDefineException        reject error err
-	
-	sy keyword javaScriptAsync                  yield async await
-	sy keyword javaScriptClass                  class constructor get set static extends
-	sy keyword javaScriptScope                  this that super global window arguments prototype
-	sy keyword javaScriptGlobalObjects          Array Boolean Date Function Math Number Object RegExp String Symbol Promise
-	sy keyword javaScriptGlobalLiteral          NaN Infinity
-	
-	sy keyword javaScriptOperatorKeyword        delete new instanceof typeof void
-	sy match   javaScriptOperatorSymbol         "[+\-*/%@#\^~|&.?:=<>,;]\+"
-	
-	sy keyword javaScriptBoolean                true false
-	sy keyword javaScriptNull                   null undefined
-	
-	sy keyword javaScriptConditional            if else switch
-	sy keyword javaScriptRepeat                 do while for in of
-	sy keyword javaScriptControl                break continue return with
-	sy keyword javaScriptExceptions             try catch throw finally Error EvalError RangeError ReferenceError SyntaxError TypeError URIError
-	sy keyword javaScriptLabel                  case default
-	
-	sy keyword javaScriptDebug                  console debugger
-	
-	sy keyword javaScriptCommentTodo            TODO FIXME XXX TBD contained
-	sy match   javaScriptLineComment            "\/\/.*" contains=@Spell,javaScriptCommentTodo
-	sy match   javaScriptCommentSkip            "^[ \t]*\*\($\|[ \t]\+\)"
-	sy region  javaScriptComment                start="/\*"  end="\*/" contains=@Spell,javaScriptCommentTodo
-	
-	sy match   javaScriptSpecial                "\\\d\d\d\|\\."
-	sy region  javaScriptString                 start=+"+  skip=+\\\\\|\\"+  end=+"\|$+	contains=javaScriptSpecial,@htmlPreproc
-	sy region  javaScriptString                 start=+'+  skip=+\\\\\|\\'+  end=+'\|$+	contains=javaScriptSpecial,@htmlPreproc
-	sy region  javascriptTemplate               start=/`/  skip=/\\\\\|\\`\|\n/  end=/`\|$/ contains=javascriptTemplateSubstitution nextgroup=@javascriptComments,@javascriptSymbols skipwhite skipempty
-	sy region  javascriptTemplateSubstitution   matchgroup=javascriptTemplateSB contained start=/\(\\\)\@<!\${/ end=/}/ contains=@javascriptExpression
-	
-	sy match   javaScriptSpecialCharacter       "'\\.'"
-	sy match   javaScriptNumber                 "-\=\<\d\+L\=\>\|0[xX][0-9a-fA-F]\+\>"
-	sy region  javaScriptRegexpString           start=+/[^/*]+me=e-1 skip=+\\\\\|\\/+ end=+/[gim]\{0,2\}\s*$+ end=+/[gim]\{0,2\}\s*[;.,)\]}]+me=e-1 contains=@htmlPreproc oneline
-	sy match   javaScriptFloat                  /\<-\=\%(\d\+\.\d\+\|\d\+\.\|\.\d\+\)\%([eE][+-]\=\d\+\)\=\>/
-	sy match   javascriptDollar                 "\$"
-	
-	sy cluster javaScriptAll                    contains=javaScriptComment,javaScriptLineComment,javaScriptDocComment,javaScriptString,javaScriptRegexpString,javascriptTemplate,javaScriptNumber,javaScriptFloat,javascriptDollar,javaScriptLabel,javaScriptSource,javaScriptWebAPI,javaScriptOperator,javaScriptBoolean,javaScriptNull,javaScriptFuncKeyword,javaScriptConditional,javaScriptRepeat,javaScriptBranch,javaScriptStatement,javaScriptGlobalObjects,javaScriptMessage,javaScriptIdentifier,javaScriptExceptions,javaScriptReserved,javaScriptDeprecated,javaScriptDomErrNo,javaScriptDomNodeConsts,javaScriptHtmlEvents,javaScriptDotNotation,javaScriptBrowserObjects,javaScriptDOMObjects,javaScriptAjaxObjects,javaScriptPropietaryObjects,javaScriptDOMMethods,javaScriptHtmlElemProperties,javaScriptDOMProperties,javaScriptEventListenerKeywords,javaScriptEventListenerMethods,javaScriptAjaxProperties,javaScriptAjaxMethods,javaScriptFuncArg
-	
-	sy keyword javaScriptFuncKeyword            function contained
-	sy region  javaScriptFuncExp                start=/\w\+\s\==\s\=function\>/ end="\([^)]*\)" contains=javaScriptFuncEq,javaScriptFuncKeyword,javaScriptFuncArg keepend
-	sy match   javaScriptFuncArg                "\(([^()]*)\)" contains=javaScriptParens,javaScriptFuncComma contained
-	sy match   javaScriptFuncComma              /,/ contained
-	sy match   javaScriptFuncEq                 /=/ contained
-	sy region  javaScriptFuncDef                start="\<function\>" end="\([^)]*\)" contains=javaScriptFuncKeyword,javaScriptFuncArg keepend
-	
-	sy match   javaScriptBraces                 "[{}\[\]]"
-	sy match   javaScriptParens                 "[()]"
-	sy match   javaScriptOperatorSymbolLogic    "\(&&\)\|\(||\)\|\(!\)"
-	
-	sy keyword javaScriptFkUtilAPI              Is Cc ski exTemplate Logger serialize sleep ajax
-	sy keyword javaScriptFkUtilConst            EF
-	
-	sy cluster  htmlJavaScript                  contains=@javaScriptAll,javaScriptBracket,javaScriptParen,javaScriptBlock,javaScriptParenError
-	sy cluster  javaScriptExpression            contains=@javaScriptAll,javaScriptBracket,javaScriptParen,javaScriptBlock,javaScriptParenError,@htmlPreproc
 endfun
 
 " Vundle
@@ -359,11 +285,15 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'rust-lang/rust.vim'
 
+Plugin 'ForkFG/FkVim', { 'rtp': 'javascript/' }
+
 Plugin 'scrooloose/syntastic'
 let g:syntastic_javascript_checkers = [ 'eslint' ]
 let g:syntastic_always_populate_loc_list = 1
 
 Plugin 'Chiel92/vim-autoformat'
+
+Plugin 'kana/vim-fakeclip'
 
 call vundle#end()
 
