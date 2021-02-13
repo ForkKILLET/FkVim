@@ -39,7 +39,7 @@ map <Down>	<Nop>
 set t_Co=256
 syntax on
 
-hi LineNr					ctermfg=Black
+hi LineNr					ctermfg=White
 hi CursorLine									cterm=underline
 hi CursorLineNr									cterm=bold
 
@@ -110,7 +110,7 @@ hi javaScriptLabel                  ctermfg=202
 aug FtDetect | au!
 	au BufRead,BufNewFile	*.via		setf via " VIm Annotated
 	au FileType				via			cal VimAnn()
-	au FileType				javascript	cal JS()
+	"au FileType				javascript	cal JS()
 aug END
 
 " Via
@@ -272,7 +272,7 @@ endfun
 
 fun! JS()
 	" Abbreviate
-
+	setl iskeyword+=(
 	iabb cl( console.log()<Left>
 endfun
 

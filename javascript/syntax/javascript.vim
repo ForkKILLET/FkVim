@@ -1,6 +1,14 @@
-" Abbreviate
+" Chore
 
-iabb cl( console.log()<Left>
+if !exists("main_syntax")
+  " quit when a syntax file was already loaded
+  if exists("b:current_syntax")
+    finish
+  endif
+  let main_syntax = 'javascript'
+elseif exists("b:current_syntax") && b:current_syntax == "javascript"
+  finish
+endif
 
 " Syntax
 setl iskeyword+=$
