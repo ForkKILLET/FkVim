@@ -110,7 +110,7 @@ hi javaScriptLabel                  ctermfg=202
 aug FtDetect | au!
 	au BufRead,BufNewFile	*.via		setf via " VIm Annotated
 	au FileType				via			cal VimAnn()
-	"au FileType				javascript	cal JS()
+	au FileType				javascript	cal JS()
 aug END
 
 " Via
@@ -285,7 +285,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'rust-lang/rust.vim'
 
-Plugin 'ForkFG/FkVim', { 'rtp': 'javascript/' }
+Plugin expand('file://$HOME/_/FkVim'), { 'rtp': 'javascript/' }
 
 Plugin 'scrooloose/syntastic'
 let g:syntastic_javascript_checkers = [ 'eslint' ]
