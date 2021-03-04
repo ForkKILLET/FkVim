@@ -28,7 +28,7 @@ sy keyword javaScriptDefineException        reject error err
 sy keyword javaScriptAsync                  yield async await
 sy keyword javaScriptClass                  class constructor get set static extends
 sy keyword javaScriptScope                  this that super global window arguments prototype
-sy keyword javaScriptGlobalObjects          Array Boolean Date Function Math JSON Number Object RegExp String Symbol Promise
+sy keyword javaScriptGlobalObjects          Array Boolean Date Function Math JSON Number Object RegExp String Symbol Promise Reflect Proxy
 sy keyword javaScriptGlobalLiteral          NaN Infinity
 
 sy keyword javaScriptOperatorKeyword        delete new instanceof typeof void

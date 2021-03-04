@@ -1,14 +1,20 @@
 " Basic
-set mouse=a
+set		mouse=a
 
-set nu
+set		number
+set		cursorline
 
 inor	<C-Z> <ESC>ua
 nnor	ve :vnew $VIMRC<CR> 
 nnor	vs :source $VIMRC<CR> 
 
 set		hlsearch
+set		incsearch
 nnor	<silent> <ESC>/ :set hlsearch!<CR>
+nnor	/iw yiw/\<<C-R>"\><CR>
+nnor	siw yiw:%s/\<<C-R>"\>/
+vnor	/ y<ESC>/\<<C-R>"\><CR>
+vnor	s y<ESC>:%s/\<<C-R>"\>/
 
 nnor	; :
 nnor	?? :h 
@@ -26,8 +32,10 @@ set		nowrap
 nnor	<silent> <ESC>w :set wrap!<CR>
 
 set		foldmethod=indent
-nnor	za zA
-nnor	zA za
+" nnor	za zA
+" nnor	zA za
+
+inor	<C-\>p Ψ
 
 " Learner
 map <Left>	<Nop>
@@ -68,7 +76,7 @@ hi javaScriptFuncEq                 ctermfg=240
 
 hi javaScriptOperatorKeyword        ctermfg=248             cterm=bold
 hi javaScriptOperatorSymbol         ctermfg=248
-hi javaScriptOperatorSymbolLogic    ctermfg=202
+hi javaScriptOperatorSymbolLogic    ctermfg=248
 
 hi javaScriptNumber                 ctermfg=77
 hi javaScriptGlobalLiteral          ctermfg=77
@@ -85,7 +93,7 @@ hi javaScriptParens                 ctermfg=74
 hi javaScriptModule                 ctermfg=199
 hi javaScriptCommonModule           ctermfg=199
 
-hi javaScriptGlobalObjects          ctermfg=168
+hi javaScriptGlobalObjects          ctermfg=129
 hi javaScriptScope                  ctermfg=199
 
 hi javaScriptDollar                 ctermfg=240
@@ -271,9 +279,8 @@ endfun
 " JS
 
 fun! JS()
-	" Abbreviate
-	setl iskeyword+=(
-	iabb cl( console.log()<Left>
+	" Fragment
+	inor <C-\>cl console.log()<Left>
 endfun
 
 " Vundle
@@ -294,6 +301,10 @@ let g:syntastic_always_populate_loc_list = 1
 Plugin 'Chiel92/vim-autoformat'
 
 Plugin 'kana/vim-fakeclip'
+let g:fakeclip_provide_clipboard_key_mappings = 1
+
+" Plugin 'Yggdroot/indentLine'
+" let g:indentLine_setColors = 7
 
 call vundle#end()
 
