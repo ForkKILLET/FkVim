@@ -1,123 +1,143 @@
 " Basic
-set		mouse=a
+	set		mouse=a
+	nnor	<silent> <ESC>m :if&mouse=="a"<Bar>set mouse=<Bar>else<Bar>set mouse=a<Bar>endif<CR>
 
-set		number
-set		cursorline
+	set		number
+	nnor	<ESC>n :set nu!<CR>
 
-inor	<C-Z> <ESC>ua
-nnor	ve :vnew $VIMRC<CR> 
-nnor	vs :source $VIMRC<CR> 
+	set		cursorline
 
-set		hlsearch
-set		incsearch
-nnor	<silent> <ESC>/ :set hlsearch!<CR>
-nnor	/iw yiw/\<<C-R>"\><CR>
-nnor	siw yiw:%s/\<<C-R>"\>/
-vnor	/ y<ESC>/\<<C-R>"\><CR>
-vnor	s y<ESC>:%s/\<<C-R>"\>/
+	nnor	ve :vnew $VIMRC<CR> 
+	nnor	vs :source $VIMRC<CR>
 
-nnor	; :
-nnor	?? :h 
-nnor	Q :q<CR>
-nnor	S :w<CR>
-nnor	Sq :wq<CR>
-nnor	Sg :w<CR>:!gulp<CR>
-nnor	Sgg :w<CR>:!gulp 
+	nnor	vl :vnew .eslintrc.js<CR>
 
-set		shiftwidth=4
-set		tabstop=4
-set		softtabstop=4
+	set		hlsearch
+	set		incsearch
+	nnor	<silent> <ESC>/ :set hlsearch!<CR>
+	nnor	/iw yiw/\<<C-R>"\><CR>
+	nnor	siw yiw:%s/\<<C-R>"\>/
+	vnor	/ y<ESC>/\<<C-R>"\><CR>
+	vnor	s y<ESC>:%s/\<<C-R>"\>/
 
-set		nowrap
-nnor	<silent> <ESC>w :set wrap!<CR>
+	nnor	; :
+	nnor	?? :h 
+	nnor	Q :q<CR>
+	nnor	S :w<CR>
+	nnor	Sq :wq<CR>
 
-set		foldmethod=indent
-" nnor	za zA
-" nnor	zA za
+	nnor	Sg :w<CR>:!gulp<CR>
+	nnor	Sgg :w<CR>:!gulp 
 
-inor	<C-\>p Ψ
+	" xclip
+	nnor    Sy :w<CR>:!xclip -selection c %<CR>
+	vnor	<silent> <C-Y> y<ESC>:sil exe '!echo -n ' . @0 . ' <BAR> xclip -selection c'<CR>:redraw!<CR>
+
+    nnor    St :w<CR>:!tsc<CR>
+
+	set		shiftwidth=4
+	set		tabstop=4
+	set		softtabstop=4
+
+	" inor <TAB> <SPACE><SPACE><SPACE><SPACE>
+
+	set		nowrap
+	nnor	<silent> <ESC>w :set wrap!<CR>
+
+	set		foldmethod=indent
+
+	inor	<C-\>p Ψ
 
 " Learner
-map <Left>	<Nop>
-map <Right>	<Nop>
-map <Up>	<Nop>
-map <Down>	<Nop>
+    map <Left>	<Nop>
+    map <Right>	<Nop>
+    map <Up>	<Nop>
+    map <Down>	<Nop>
 
 " Highlight " Vim
-set t_Co=256
-syntax on
+    set		t_Co=256
+    sy on
+    
+    hi LineNr							ctermfg=White
+    hi CursorLine												cterm=underline
+    hi CursorLineNr												cterm=bold
+    
+    hi qfLineNr							ctermfg=DarkGreen
+    
+    hi Folded							ctermfg=Black			ctermbg=Grey
 
-hi LineNr					ctermfg=White
-hi CursorLine									cterm=underline
-hi CursorLineNr									cterm=bold
-
-hi qfLineNr					ctermfg=DarkGreen
+	hi Pmenu													ctermbg=LightGrey
 
 " Highlight " Via
-hi Annotation				ctermfg=Blue
-hi AnnotationBracket		ctermfg=Grey
-hi AnnotationSymbol			ctermfg=Red
-hi AnnotationComma			ctermfg=Grey
-hi AnnotationType			ctermfg=DarkBlue	cterm=underline
-hi AnnotationNote			ctermfg=DarkGrey
+    hi Annotation						ctermfg=Blue
+    hi AnnotationBracket				ctermfg=Grey
+    hi AnnotationSymbol					ctermfg=Red
+    hi AnnotationComma					ctermfg=Grey
+    hi AnnotationType					ctermfg=DarkBlue		cterm=underline
+    hi AnnotationNote					ctermfg=DarkGrey
 
 " Highlight " JS
-hi javaScriptFkUtilAPI              ctermfg=55              cterm=underline
-hi javaScriptFkUtilConst            ctermfg=77              cterm=underline
-
-hi javaScriptDefine                 ctermfg=69              cterm=bold
-hi javaScriptDefineProper           ctermfg=21
-hi javaScriptDefineException        ctermfg=196
-hi javaScriptFuncKeyword            ctermfg=69              cterm=bold
-hi javaScriptFuncDef                ctermfg=18
-hi javaScriptFuncArg                ctermfg=99
-hi javaScriptFuncComma              ctermfg=240
-hi javaScriptFuncEq                 ctermfg=240
-
-hi javaScriptOperatorKeyword        ctermfg=248             cterm=bold
-hi javaScriptOperatorSymbol         ctermfg=248
-hi javaScriptOperatorSymbolLogic    ctermfg=248
-
-hi javaScriptNumber                 ctermfg=77
-hi javaScriptGlobalLiteral          ctermfg=77
-hi javaScriptBoolean                ctermfg=77
-hi javaScriptNull                   ctermfg=77
-hi javaScriptString                 ctermfg=128
-hi javaScriptTemplate               ctermfg=128
-hi javaScriptTemplateSubstitution   ctermfg=99
-hi javaScriptRegexpString           ctermfg=77
-
-hi javaScriptBraces                 ctermfg=74
-hi javaScriptParens                 ctermfg=74
-
-hi javaScriptModule                 ctermfg=199
-hi javaScriptCommonModule           ctermfg=199
-
-hi javaScriptGlobalObjects          ctermfg=129
-hi javaScriptScope                  ctermfg=199
-
-hi javaScriptDollar                 ctermfg=240
-hi javaScriptSpecial                ctermfg=99
-hi javaScriptDebug                  ctermfg=238             cterm=underline
-
-hi javaScriptShebang                ctermfg=19              cterm=bold,underline
-hi javaScriptCommentLine            ctermfg=20              cterm=bold
-hi javaScriptComment                ctermfg=20              cterm=bold
-hi javaScriptCommentTodo            ctermfg=233             cterm=bold,underline
-
-hi javaScriptAsync                  ctermfg=208             cterm=bold
-hi javaScriptClass                  ctermfg=205             cterm=bold
-
-hi javaScriptConditional            ctermfg=37              cterm=bold
-hi javaScriptRepeat                 ctermfg=41              cterm=bold
-hi javaScriptControl                ctermfg=27              cterm=bold
-hi javaScriptExceptions             ctermfg=196             cterm=bold
-hi javaScriptLabel                  ctermfg=202
+    hi javaScriptFkUtilAPI              ctermfg=55              cterm=underline
+    hi javaScriptFkUtilConst            ctermfg=77              cterm=underline
+    
+    hi javaScriptDefine                 ctermfg=69              cterm=bold
+    hi javaScriptDefineProper           ctermfg=21
+    hi javaScriptDefineException        ctermfg=196
+    hi javaScriptFuncKeyword            ctermfg=69              cterm=bold
+    hi javaScriptFuncDef                ctermfg=255
+    hi javaScriptFuncArg                ctermfg=255
+    hi javaScriptFuncComma              ctermfg=240
+    hi javaScriptFuncEq                 ctermfg=240
+    
+    hi javaScriptOperatorKeyword        ctermfg=248             cterm=bold
+    hi javaScriptOperatorSymbol         ctermfg=248
+    hi javaScriptOperatorSymbolLogic    ctermfg=248
+    
+    hi javaScriptNumber                 ctermfg=77
+    hi javaScriptFloat                  ctermfg=77
+    hi javaScriptGlobalLiteral          ctermfg=77
+    hi javaScriptBoolean                ctermfg=77
+    hi javaScriptNull                   ctermfg=77
+    hi javaScriptString                 ctermfg=128
+    hi javaScriptTemplate               ctermfg=128
+    hi javaScriptTemplateSubstitution   ctermfg=99
+    hi javaScriptRegexpString           ctermfg=77
+    
+    hi javaScriptBraces                 ctermfg=74
+    hi javaScriptParens                 ctermfg=74
+    
+    hi javaScriptModule                 ctermfg=199
+    hi javaScriptCommonModule           ctermfg=199
+    
+    hi javaScriptGlobalObjects          ctermfg=129
+    hi javaScriptScope                  ctermfg=199
+    
+    hi javaScriptDollar                 ctermfg=255
+    hi javaScriptSpecial                ctermfg=99
+    hi javaScriptDebug                  ctermfg=238             cterm=underline
+    
+    hi javaScriptShebang                ctermfg=19              cterm=bold,underline
+    hi javaScriptCommentLine            ctermfg=20              cterm=bold
+    hi javaScriptComment                ctermfg=20              cterm=bold
+    hi javaScriptCommentTodo            ctermfg=220             cterm=bold,underline
+    
+    hi javaScriptAsync                  ctermfg=208             cterm=bold
+    hi javaScriptClass                  ctermfg=205             cterm=bold
+    
+    hi javaScriptConditional            ctermfg=37              cterm=bold
+    hi javaScriptRepeat                 ctermfg=41              cterm=bold
+    hi javaScriptControl                ctermfg=27              cterm=bold
+    hi javaScriptExceptions             ctermfg=196             cterm=bold
+    hi javaScriptLabel                  ctermfg=202
+    
+    hi javaScriptTrailingSpace									ctermbg=LightRed
 
 " FtDetect
 aug FtDetect | au!
-	au BufRead,BufNewFile	*.via		setf via " VIm Annotated
+	au BufRead,BufNewFile	*.via		setf via		" VIm Annotated
+	au BufRead,BufNewFile	*.tico		setf tico		" Text ICOn
 	au FileType				via			cal VimAnn()
+	au FileType				tico		cal TIco()
 	au FileType				javascript	cal JS()
 aug END
 
@@ -276,6 +296,36 @@ fun! VimAnn()
 	endfun
 endfun
 
+" TIco
+
+fun! TIco()
+	sy clear
+
+	sy region	TIcoMain		start=/<<</ end=/>>>/ contains=
+		\TIcoBg,TIcoFg,TIcoRed,TIcoRedL,TIcoBlue,TIcoBlueL,TIcoMagenta,TIcoMagentaL,TIcoGrey
+	sy match	TIcoBg			/#/ contained
+	sy match	TIcoFg			/ / contained
+	sy match	TIcoRed			/R/ contained
+	sy match	TIcoRedL		/r/ contained
+	sy match	TIcoBlue		/B/ contained
+	sy match	TIcoBlueL		/b/ contained
+	sy match	TIcoMagenta		/M/ contained
+	sy match	TIcoMagentaL	/m/ contained
+	sy match	TIcoGrey		/G/ contained
+
+	hi TIcoBg			ctermfg=Black
+	hi TIcoFg			ctermbg=White
+	hi TIcoRed			ctermfg=Red
+	hi TIcoRedL			ctermfg=LightRed
+	hi TIcoBlue			ctermfg=Blue
+	hi TIcoBlueL		ctermfg=LightBlue
+	hi TIcoMagenta		ctermfg=Magenta
+	hi TIcoMagentaL		ctermfg=LightMagenta
+	hi TIcoGrey			ctermfg=Grey
+
+	hi TIcoConfig		ctermfg=White
+endfun
+
 " JS
 
 fun! JS()
@@ -289,24 +339,37 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'Shougo/vimproc.vim'
 
 Plugin 'rust-lang/rust.vim'
 
 Plugin expand('file://$HOME/_/FkVim'), { 'rtp': 'javascript/' }
 
+" Plugin 'leafgarland/typescript-vim'
+" Plugin 'HerringtonDarkholme/yats.vim'
+Plugin 'jason0x43/vim-js-indent'
+
+" Plugin 'Quramy/tsuquyomi'
+" let g:tsuquyomi_disable_quickfix = 1
+
+Plugin 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+
 Plugin 'scrooloose/syntastic'
 let g:syntastic_javascript_checkers = [ 'eslint' ]
+" let g:syntastic_typescript_checkers = [ 'tsuquyomi' ]
 let g:syntastic_always_populate_loc_list = 1
 
 Plugin 'Chiel92/vim-autoformat'
 
-Plugin 'kana/vim-fakeclip'
-let g:fakeclip_provide_clipboard_key_mappings = 1
+" Plugin 'kana/vim-fakeclip'
+" let g:fakeclip_provide_clipboard_key_mappings = 1
 
 " Plugin 'Yggdroot/indentLine'
 " let g:indentLine_setColors = 7
 
 call vundle#end()
+
+filetype plugin on
 
 " Utility
 
