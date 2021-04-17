@@ -31,7 +31,7 @@
 
 	" xclip
 	nnor    Sy :w<CR>:!xclip -selection c %<CR>
-	vnor	<silent> <C-Y> y<ESC>:sil exe '!echo -n ' . @0 . ' <BAR> xclip -selection c'<CR>:redraw!<CR>
+	vnor	<silent> <C-Y> y<ESC>:sil exe '!echo -n ''' . @0 . ''' <BAR> xclip -selection c'<CR>:redraw!<CR>
 
     nnor    St :w<CR>:!tsc<CR>
 
