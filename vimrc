@@ -29,6 +29,8 @@
 	nnor	Sg :w<CR>:!gulp<CR>
 	nnor	Sgg :w<CR>:!gulp 
 
+	nnor	Sr :w<CR>:!rustc % -o ~/src/rust/tmp.out && ~/src/rust/tmp.out<CR>
+
 	" xclip
 	nnor    Sy :w<CR>:!xclip -selection c %<CR>
 	vnor	<silent> <C-Y> y<ESC>:sil exe '!echo -n ''' . @0 . ''' <BAR> xclip -selection c'<CR>:redraw!<CR>
