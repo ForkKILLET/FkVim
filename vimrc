@@ -21,6 +21,7 @@
 	nnor	siw yiw:%s/\<<C-R>"\>/
 	vnor	/ y<ESC>/\<<C-R>"\><CR>
 	vnor	s y<ESC>:%s/\<<C-R>"\>/
+	vnor	<C-S> y<ESC>:%s/<C-R>"/
 
 	nnor	; :
 	nnor	?? :h 
@@ -35,107 +36,59 @@
 	nnor	Sr :w<CR>:!rustc % -o ~/src/rust/tmp.out && ~/src/rust/tmp.out<CR>
 
 	" xclip
-	nnor    Sy :w<CR>:!xclip -selection c %<CR>
+	nnor	Sy :w<CR>:!xclip -selection c %<CR>
 	vnor	<silent> <C-Y> y<ESC>:sil exe '!echo -n ''' . @0 . ''' <BAR> xclip -selection c'<CR>:redraw!<CR>
 
-    nnor    St :w<CR>:!tsc<CR>
+	nnor	St :w<CR>:!tsc<CR>
 
 	set		shiftwidth=4
 	set		tabstop=4
 	set		softtabstop=4
+	set		foldmethod=indent
 
-	" inor <TAB> <SPACE><SPACE><SPACE><SPACE>
+    let space_indented = [ 'extend-luogu.user.js', 'exlg-setting/novogui.js', 'novogui.js' ]
+    if index(space_indented, expand('%')) >= 0
+		inor <TAB> <SPACE><SPACE><SPACE><SPACE>
+	end
 
 	set		nowrap
 	nnor	<silent> <ESC>w :set wrap!<CR>
 
-	set		foldmethod=indent
-
-	inor	<C-\>p Ψ
+	nnor	c'	mqF"r'f"r'`q
+	nnor	c"	mQF'r"f'r"`Q
+    nnor    "iw mQbi"<ESC>Ea"<ESC>`Ql
+	nnor	c`	mtF"r`f"r``t
+	nnor	c$	F`dt+df<SPACE>i${<ESC>f`xdT+dF<SPACE>i}<ESC>
+	nmap	c$'	mTF'c"c`f'lc"c``Tc$`T
+	nmap	c$"	mTF"c`f"lc``Tc$`T
 
 " Learner
-    map <Left>	<Nop>
-    map <Right>	<Nop>
-    map <Up>	<Nop>
-    map <Down>	<Nop>
+	map <Left>	<Nop>
+	map <Right>	<Nop>
+	map <Up>	<Nop>
+	map <Down>	<Nop>
 
 " Highlight " Vim
-    set		t_Co=256
-    sy on
-    
-    hi LineNr							ctermfg=White
-    hi CursorLine												cterm=underline
-    hi CursorLineNr												cterm=bold
-    
-    hi qfLineNr							ctermfg=DarkGreen
-    
-    hi Folded							ctermfg=Black			ctermbg=Grey
+	set		t_Co=256
+	sy on
+	
+	hi LineNr								ctermfg=White
+	hi CursorLine													cterm=underline
+	hi CursorLineNr													cterm=bold
+	
+	hi qfLineNr								ctermfg=DarkGreen
+	
+	hi Folded								ctermfg=Black			ctermbg=Grey
 
-	hi Pmenu													ctermbg=LightGrey
+	hi Pmenu														ctermbg=LightGrey
 
 " Highlight " Via
-    hi Annotation						ctermfg=Blue
-    hi AnnotationBracket				ctermfg=Grey
-    hi AnnotationSymbol					ctermfg=Red
-    hi AnnotationComma					ctermfg=Grey
-    hi AnnotationType					ctermfg=DarkBlue		cterm=underline
-    hi AnnotationNote					ctermfg=DarkGrey
-
-" Highlight " JS
-    hi javaScriptFkUtilAPI              ctermfg=55              cterm=underline
-    hi javaScriptFkUtilConst            ctermfg=77              cterm=underline
-    
-    hi javaScriptDefine                 ctermfg=69              cterm=bold
-    hi javaScriptDefineProper           ctermfg=21
-    hi javaScriptDefineException        ctermfg=196
-    hi javaScriptFuncKeyword            ctermfg=69              cterm=bold
-    hi javaScriptFuncDef                ctermfg=255
-    hi javaScriptFuncArg                ctermfg=255
-    hi javaScriptFuncComma              ctermfg=240
-    hi javaScriptFuncEq                 ctermfg=240
-    
-    hi javaScriptOperatorKeyword        ctermfg=248             cterm=bold
-    hi javaScriptOperatorSymbol         ctermfg=248
-    hi javaScriptOperatorSymbolLogic    ctermfg=248
-    
-    hi javaScriptNumber                 ctermfg=77
-    hi javaScriptFloat                  ctermfg=77
-    hi javaScriptGlobalLiteral          ctermfg=77
-    hi javaScriptBoolean                ctermfg=77
-    hi javaScriptNull                   ctermfg=77
-    hi javaScriptString                 ctermfg=128
-    hi javaScriptTemplate               ctermfg=128
-    hi javaScriptTemplateSubstitution   ctermfg=99
-    hi javaScriptRegexpString           ctermfg=77
-    
-    hi javaScriptBraces                 ctermfg=74
-    hi javaScriptParens                 ctermfg=74
-    
-    hi javaScriptModule                 ctermfg=199
-    hi javaScriptCommonModule           ctermfg=199
-    
-    hi javaScriptGlobalObjects          ctermfg=129
-    hi javaScriptScope                  ctermfg=199
-    
-    hi javaScriptDollar                 ctermfg=255
-    hi javaScriptSpecial                ctermfg=99
-    hi javaScriptDebug                  ctermfg=238             cterm=underline
-    
-    hi javaScriptShebang                ctermfg=19              cterm=bold,underline
-    hi javaScriptCommentLine            ctermfg=20              cterm=bold
-    hi javaScriptComment                ctermfg=20              cterm=bold
-    hi javaScriptCommentTodo            ctermfg=220             cterm=bold,underline
-    
-    hi javaScriptAsync                  ctermfg=208             cterm=bold
-    hi javaScriptClass                  ctermfg=205             cterm=bold
-    
-    hi javaScriptConditional            ctermfg=37              cterm=bold
-    hi javaScriptRepeat                 ctermfg=41              cterm=bold
-    hi javaScriptControl                ctermfg=27              cterm=bold
-    hi javaScriptExceptions             ctermfg=196             cterm=bold
-    hi javaScriptLabel                  ctermfg=202
-    
-    hi javaScriptTrailingSpace									ctermbg=LightRed
+	hi Annotation							ctermfg=Blue
+	hi AnnotationBracket					ctermfg=Grey
+	hi AnnotationSymbol						ctermfg=Red
+	hi AnnotationComma						ctermfg=Grey
+	hi AnnotationType						ctermfg=DarkBlue		cterm=underline
+	hi AnnotationNote						ctermfg=DarkGrey
 
 " FtDetect
 aug FtDetect | au!
@@ -144,6 +97,7 @@ aug FtDetect | au!
 	au FileType				via			cal VimAnn()
 	au FileType				tico		cal TIco()
 	au FileType				javascript	cal JS()
+	au FileType				gitcommit	cal GitCommit()
 aug END
 
 " Via
@@ -220,9 +174,9 @@ fun! VimAnn()
 
 	setl	iskeyword+=-
 	iabb	via-h 
-		\(Title          @)<CR>
-		\(LocaleTitle    @)<CR>
-		\(Author         @)<CR>
+		\(Title         @)<CR>
+		\(LocaleTitle   @)<CR>
+		\(Author        @)<CR>
 
 	" Annotation location window
 	fun! GetAnn(fmt)
@@ -318,24 +272,93 @@ fun! TIco()
 	sy match	TIcoMagentaL	/m/ contained
 	sy match	TIcoGrey		/G/ contained
 
-	hi TIcoBg			ctermfg=Black
-	hi TIcoFg			ctermbg=White
-	hi TIcoRed			ctermfg=Red
-	hi TIcoRedL			ctermfg=LightRed
-	hi TIcoBlue			ctermfg=Blue
-	hi TIcoBlueL		ctermfg=LightBlue
-	hi TIcoMagenta		ctermfg=Magenta
-	hi TIcoMagentaL		ctermfg=LightMagenta
-	hi TIcoGrey			ctermfg=Grey
+	hi TIcoBg				ctermfg=Black
+	hi TIcoFg				ctermbg=White
+	hi TIcoRed				ctermfg=Red
+	hi TIcoRedL				ctermfg=LightRed
+	hi TIcoBlue				ctermfg=Blue
+	hi TIcoBlueL			ctermfg=LightBlue
+	hi TIcoMagenta			ctermfg=Magenta
+	hi TIcoMagentaL			ctermfg=LightMagenta
+	hi TIcoGrey				ctermfg=Grey
 
-	hi TIcoConfig		ctermfg=White
+	hi TIcoConfig			ctermfg=White
 endfun
 
 " JS
 
 fun! JS()
-	" Fragment
-	inor <C-\>cl console.log()<Left>
+	" Highlight
+
+	hi clear
+
+	hi javaScriptDefine						ctermfg=69				cterm=bold
+	hi javaScriptDefineProper				ctermfg=21
+	hi javaScriptDefineException			ctermfg=196
+	hi javaScriptFuncKeyword				ctermfg=69				cterm=bold
+	hi javaScriptFuncDef					ctermfg=255
+	hi javaScriptFuncArg					ctermfg=255
+	hi javaScriptFuncComma					ctermfg=240
+	hi javaScriptFuncEq						ctermfg=240
+	
+	hi javaScriptOperatorKeyword			ctermfg=248				cterm=bold
+	hi javaScriptOperatorSymbol				ctermfg=248
+	hi javaScriptOperatorSymbolLogic		ctermfg=248
+	
+	hi javaScriptNumber						ctermfg=77
+	hi javaScriptFloat						ctermfg=77
+	hi javaScriptGlobalLiteral				ctermfg=77
+	hi javaScriptBoolean					ctermfg=77
+	hi javaScriptNull						ctermfg=77
+	hi javaScriptString						ctermfg=128
+	hi javaScriptTemplate					ctermfg=128
+	hi javaScriptTemplateSubstitution		ctermfg=99
+	hi javaScriptRegexpString				ctermfg=77
+	
+	hi javaScriptBraces						ctermfg=74
+	hi javaScriptParens						ctermfg=74
+	
+	hi javaScriptModule						ctermfg=199
+	hi javaScriptCommonModule				ctermfg=199
+	
+	hi javaScriptGlobalObjects				ctermfg=129
+	hi javaScriptScope						ctermfg=199
+	
+	hi javaScriptDollar						ctermfg=255
+	hi javaScriptSpecial					ctermfg=99
+	hi javaScriptDebug						ctermfg=238				cterm=underline
+	
+	hi javaScriptShebang					ctermfg=19				cterm=bold,underline
+	hi javaScriptCommentLine				ctermfg=20				cterm=bold
+	hi javaScriptComment					ctermfg=20				cterm=bold
+	hi javaScriptCommentTodo				ctermfg=220				cterm=bold,underline
+	
+	hi javaScriptAsync						ctermfg=208				cterm=bold
+	hi javaScriptClass						ctermfg=205				cterm=bold
+	
+	hi javaScriptConditional				ctermfg=37				cterm=bold
+	hi javaScriptRepeat						ctermfg=41				cterm=bold
+	hi javaScriptControl					ctermfg=27				cterm=bold
+	hi javaScriptExceptions					ctermfg=196				cterm=bold
+	hi javaScriptLabel						ctermfg=202
+	
+	hi javaScriptTrailingSpace										ctermbg=LightRed
+
+	" Snip
+
+	inor \cl console.log()<Left>
+	
+	" Coc
+	
+	nnor <F2> :CocCommand document.renameCurrentWord<CR>
+endfun
+
+" Git Commit
+
+fun! GitCommit()
+	" Snip
+
+	inor \vt VER <C-R>=strftime("%y%m%d")<CR>
 endfun
 
 " Vundle
@@ -348,7 +371,8 @@ Plugin 'Shougo/vimproc.vim'
 
 Plugin 'rust-lang/rust.vim'
 
-Plugin expand('file://$FK/_/FkVim'), { 'rtp': 'javascript/' }
+Plugin expand('file://$FK/_/FkVim'), { 'name': 'FkVim-javascript', 'rtp': 'javascript/' }
+Plugin expand('file://$FK/_/FkVim'), { 'name': 'FkVim-sh', 'rtp': 'sh/' }
 
 " Plugin 'leafgarland/typescript-vim'
 " Plugin 'HerringtonDarkholme/yats.vim'
@@ -371,6 +395,8 @@ Plugin 'Chiel92/vim-autoformat'
 
 " Plugin 'Yggdroot/indentLine'
 " let g:indentLine_setColors = 7
+
+" Plugin 'posva/vim-vue'
 
 call vundle#end()
 

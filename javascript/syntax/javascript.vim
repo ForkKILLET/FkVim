@@ -10,6 +10,9 @@ elseif exists("b:current_syntax") && b:current_syntax == "javascript"
   finish
 endif
 
+let s:cpo_save = &cpo
+set cpo&vim
+
 " Syntax
 setl iskeyword+=$
 
@@ -22,8 +25,8 @@ sy keyword 	javaScriptModule                import export as
 sy keyword 	javaScriptCommonModule          module exports require
 
 sy keyword 	javaScriptDefine                let const var
-sy keyword 	javaScriptDefineProper          resolve then res
-sy keyword 	javaScriptDefineException       reject error err
+sy keyword 	javaScriptDefineOK		        resolve then res
+sy keyword 	javaScriptDefineException       reject error err rej
 
 sy keyword 	javaScriptAsync                 yield async await
 sy keyword 	javaScriptClass                 class constructor get set static extends
@@ -81,5 +84,13 @@ sy keyword 	javaScriptFkUtilConst           EF
 sy cluster  htmlJavaScript                  contains=@javaScriptAll,javaScriptBracket,javaScriptParen,javaScriptBlock,javaScriptParenError
 sy cluster  javaScriptExpression            contains=@javaScriptAll,javaScriptBracket,javaScriptParen,javaScriptBlock,javaScriptParenError,@htmlPreproc
 
-sy match	javascriptTrailingSpace			/ \+$/
+sy match	javascriptTrailingSpace			/[ \t]\+$/
+
+let b:current_syntax = "javascript"
+if main_syntax == 'javascript'
+  unlet main_syntax
+endif
+let &cpo = s:cpo_save
+unlet s:cpo_save
+
 
