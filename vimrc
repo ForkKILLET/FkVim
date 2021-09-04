@@ -290,10 +290,8 @@ endfun
 fun! JS()
 	" Highlight
 
-	hi clear
-
 	hi javaScriptDefine						ctermfg=69				cterm=bold
-	hi javaScriptDefineProper				ctermfg=21
+	hi javaScriptDefineOK					ctermfg=21
 	hi javaScriptDefineException			ctermfg=196
 	hi javaScriptFuncKeyword				ctermfg=69				cterm=bold
 	hi javaScriptFuncDef					ctermfg=255
@@ -384,8 +382,11 @@ Plugin 'jason0x43/vim-js-indent'
 Plugin 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 
 Plugin 'scrooloose/syntastic'
-let g:syntastic_javascript_checkers = [ 'eslint' ]
+
+" I use CoC
+" let g:syntastic_javascript_checkers = [ 'eslint' ]
 " let g:syntastic_typescript_checkers = [ 'tsuquyomi' ]
+
 let g:syntastic_always_populate_loc_list = 1
 
 Plugin 'Chiel92/vim-autoformat'

@@ -21,7 +21,7 @@ sy sync fromstart
 
 sy match	javaScriptShebang               "^#!.*"
 
-sy keyword 	javaScriptModule                import export as
+sy keyword 	javaScriptModule                import export as from
 sy keyword 	javaScriptCommonModule          module exports require
 
 sy keyword 	javaScriptDefine                let const var
