@@ -2,6 +2,8 @@
 	set		mouse=a
 	nnor	<silent> <ESC>m :if&mouse=="a"<Bar>set mouse=<Bar>else<Bar>set mouse=a<Bar>endif<CR>
 
+	set		backspace=2
+
 	set		number
 	nnor	<ESC>n :set nu!<CR>
 
@@ -14,17 +16,18 @@
 
 	set		hlsearch
 	set		incsearch
-	nnor	<silent> <ESC>/ :set hlsearch!<CR>
-	nnor	/iw yiw/\<<C-R>"\><CR>
+	nnor	<silent> <ESC>f :set hlsearch!<CR>
+	nnor	fiw yiw/\<<C-R>"\><CR>
 	nnor	siw yiw:%s/\<<C-R>"\>/
 	vnor	/ y<ESC>/\<<C-R>"\><CR>
 	vnor	s y<ESC>:%s/\<<C-R>"\>/
 
 	nnor	; :
 	nnor	?? :h 
-	nnor	Q :q<CR>
 	nnor	S :w<CR>
 	nnor	Sq :wq<CR>
+
+	set		undodir=$VIMFILES/undodir
 
 	nnor	Sg :w<CR>:!gulp<CR>
 	nnor	Sgg :w<CR>:!gulp 
@@ -337,15 +340,15 @@ endfun
 
 " Vundle
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+set rtp+=$VIMFILES/bundle/Vundle.vim
+cal vundle#begin(expand('$VIMFILES/bundle'))
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'Shougo/vimproc.vim'
 
 Plugin 'rust-lang/rust.vim'
 
-Plugin expand('file://$HOME/_/FkVim'), { 'rtp': 'javascript/' }
+Plugin expand('file://$FK/_/FkVim'), { 'rtp': 'javascript/' }
 
 " Plugin 'leafgarland/typescript-vim'
 " Plugin 'HerringtonDarkholme/yats.vim'
