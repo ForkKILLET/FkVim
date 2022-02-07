@@ -62,7 +62,7 @@ sy region  	javascriptTemplateSubstitution  matchgroup=javascriptTemplateSB cont
 sy match   	javaScriptSpecialCharacter      "'\\.'"
 sy match   	javaScriptNumber                "-\=\<\d\+L\=\>\|0[xX][0-9a-fA-F]\+\>\|0[b]"
 sy region  	javaScriptRegexpString          start=+/[^/*]+me=e-1 skip=+\\\\\|\\/+ end=+/[gim]\{0,2\}\s*$+ end=+/[gim]\{0,2\}\s*[;.,)\]}]+me=e-1 contains=@htmlPreproc oneline
-sy match   	javaScriptFloat                 /\<-\=\%(\d\+\.\d\+\|\d\+\.\|\.\d\+\)\%([eE][+-]\=\d\+\)\=\>/
+sy match   	javaScriptFloat                 /[+-]\?\(\([1-9]\d*\|0\)\?\.\d\+\([Ee][+-]\?\d\+\)\?\|\([1-9]\d*\|0\)[Ee][+-]\?\d\+\)/
 sy match   	javascriptDollar                "\$"
 
 sy cluster 	javaScriptAll                   contains=javaScriptComment,javaScriptLineComment,javaScriptDocComment,javaScriptString,javaScriptRegexpString,javascriptTemplate,javaScriptNumber,javaScriptFloat,javascriptDollar,javaScriptLabel,javaScriptSource,javaScriptWebAPI,javaScriptOperator,javaScriptBoolean,javaScriptNull,javaScriptFuncKeyword,javaScriptConditional,javaScriptRepeat,javaScriptBranch,javaScriptStatement,javaScriptGlobalObjects,javaScriptMessage,javaScriptIdentifier,javaScriptExceptions,javaScriptReserved,javaScriptDeprecated,javaScriptDomErrNo,javaScriptDomNodeConsts,javaScriptHtmlEvents,javaScriptDotNotation,javaScriptBrowserObjects,javaScriptDOMObjects,javaScriptAjaxObjects,javaScriptPropietaryObjects,javaScriptDOMMethods,javaScriptHtmlElemProperties,javaScriptDOMProperties,javaScriptEventListenerKeywords,javaScriptEventListenerMethods,javaScriptAjaxProperties,javaScriptAjaxMethods,javaScriptFuncArg

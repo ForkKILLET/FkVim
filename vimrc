@@ -23,7 +23,6 @@
 	vnor	s y<ESC>:%s/\<<C-R>"\>/
 	vnor	<C-S> y<ESC>:%s/<C-R>"/
 
-	nnor	; :
 	nnor	?? :h 
 	nnor	S :w<CR>
 	nnor	Sq :wq<CR>
@@ -34,10 +33,10 @@
 	nnor	Sgg :w<CR>:!gulp 
 
 	nnor	Sr :w<CR>:!rustc % -o ~/src/rust/tmp.out && ~/src/rust/tmp.out<CR>
+	nnor	Sn :w<CR>:!node %<CR>
 
 	" xclip
 	nnor	Sy :w<CR>:!xclip -selection c %<CR>
-	vnor	<silent> <C-Y> y<ESC>:sil exe '!echo -n ''' . @0 . ''' <BAR> xclip -selection c'<CR>:redraw!<CR>
 
 	nnor	St :w<CR>:!tsc<CR>
 
@@ -55,9 +54,15 @@
 	nnor	<silent> <ESC>w :set wrap!<CR>
 
 	nnor	c'	mqF"r'f"r'`q
-	nnor	c"	mQF'r"f'r"`Q
+	nnor	c"	mqF'r"f'r"`q
+	nnor	c`	mqF"r`f"r``q
+
+	nnor	cx' mqF'xf'x`ql
+	nnor	cx"	mqF"xf"x`ql
+
+    nnor    'iw mQbi'<ESC>Ea'<ESC>`Ql
     nnor    "iw mQbi"<ESC>Ea"<ESC>`Ql
-	nnor	c`	mtF"r`f"r``t
+
 	nnor	c$	F`dt+df<SPACE>i${<ESC>f`xdT+dF<SPACE>i}<ESC>
 	nmap	c$'	mTF'c"c`f'lc"c``Tc$`T
 	nmap	c$"	mTF"c`f"lc``Tc$`T
@@ -94,6 +99,7 @@
 aug FtDetect | au!
 	au BufRead,BufNewFile	*.via		setf via		" VIm Annotated
 	au BufRead,BufNewFile	*.tico		setf tico		" Text ICOn
+	au BufRead,BufNewFile	*.mcmeta	setf json
 	au FileType				via			cal VimAnn()
 	au FileType				tico		cal TIco()
 	au FileType				javascript	cal JS()
@@ -344,7 +350,7 @@ fun! JS()
 
 	" Snip
 
-	inor \cl console.log()<Left>
+	inor <C-\>cl console.log()<Left>
 	
 	" Coc
 	
@@ -365,39 +371,22 @@ set rtp+=$VIMFILES/bundle/Vundle.vim
 cal vundle#begin(expand('$VIMFILES/bundle'))
 
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'Shougo/vimproc.vim'
 
+Plugin 'Shougo/vimproc.vim'
 Plugin 'rust-lang/rust.vim'
 
 Plugin expand('file://$FK/_/FkVim'), { 'name': 'FkVim-javascript', 'rtp': 'javascript/' }
 Plugin expand('file://$FK/_/FkVim'), { 'name': 'FkVim-sh', 'rtp': 'sh/' }
 
-" Plugin 'leafgarland/typescript-vim'
-" Plugin 'HerringtonDarkholme/yats.vim'
-Plugin 'jason0x43/vim-js-indent'
-
-" Plugin 'Quramy/tsuquyomi'
-" let g:tsuquyomi_disable_quickfix = 1
-
 Plugin 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
-
 Plugin 'scrooloose/syntastic'
-
-" I use CoC
-" let g:syntastic_javascript_checkers = [ 'eslint' ]
-" let g:syntastic_typescript_checkers = [ 'tsuquyomi' ]
-
 let g:syntastic_always_populate_loc_list = 1
 
 Plugin 'Chiel92/vim-autoformat'
 
-" Plugin 'kana/vim-fakeclip'
-" let g:fakeclip_provide_clipboard_key_mappings = 1
+Plugin 'congma/vim-fakeclip' " kana/~ doesn't work on x11
 
-" Plugin 'Yggdroot/indentLine'
-" let g:indentLine_setColors = 7
-
-" Plugin 'posva/vim-vue'
+let g:fakeclip_provide_clipboard_key_mappings = 1
 
 call vundle#end()
 
