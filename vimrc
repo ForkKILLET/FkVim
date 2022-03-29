@@ -1,5 +1,7 @@
 " Basic
 	set		nocompatible
+	set		modelines=0
+
 	set		mouse=a
 	nnor	<silent> <ESC>m :if&mouse=="a"<Bar>set mouse=<Bar>else<Bar>set mouse=a<Bar>endif<CR>
 
@@ -13,7 +15,7 @@
 	nnor	ve :vnew $VIMRC<CR> 
 	nnor	vs :source $VIMRC<CR>
 
-	nnor	vl :vnew .eslintrc.js<CR>
+	nnor	vl :vnew .eslintrc.cjs<CR>
 
 	set		hlsearch
 	set		incsearch
@@ -34,8 +36,9 @@
 	nnor	Sgg :w<CR>:!gulp 
 
 	nnor	Sr :w<CR>:!rustc % -o ~/src/rust/tmp.out && ~/src/rust/tmp.out<CR>
+	nnor	Sw :w<CR>:!wasm-pack build -t web<CR>
 	nnor	Sn :w<CR>:!node %<CR>
-	nnor	Se :w<CR>:!node esbuild.cjs<CR><CR>
+	nnor	Se :w<CR>:!node esbuild.cjs<CR>
 
 	nnor	Sy :w<CR>:!xclip -selection c %<CR>
 
@@ -103,6 +106,9 @@ aug FtDetect | au!
 	au BufRead,BufNewFile	*.mcmeta		setf json
 	au BufRead,BufNewFile	*.styl			setf stylus
 	au BufRead,BufNewFile	log-port		setf log_port
+	au BufRead,BufNewFile	log-hist		setf plain
+	au BufRead,BufNewFile	log-*			setf markdown
+	au FileType				json			cal JSON()
 	au FileType				via				cal VimAnn()
 	au FileType				tico			cal TIco()
 	au FileType				javascript		cal JS()
@@ -272,8 +278,8 @@ fun! TIco()
 
 	sy clear
 
-	sy region	TIcoMain		start=/<<</ end=/>>>/ contains=
-		\TIcoBg,TIcoFg,TIcoRed,TIcoRedL,TIcoBlue,TIcoBlueL,TIcoMagenta,TIcoMagentaL,TIcoGrey
+	sy region	TIcoMain		matchgroup=TIcoMainDelimiter start=/<<</ end=/>>>/ contains=
+		\TIcoBg,TIcoFg,TIcoRed,TIcoRedL,TIcoBlue,TIcoBlueL,TIcoMagenta,TIcoMagentaL,TIcoGrey,TIcoGreen,TIcoGreenL
 	sy match	TIcoBg			/#/ contained
 	sy match	TIcoFg			/ / contained
 	sy match	TIcoRed			/R/ contained
@@ -282,9 +288,12 @@ fun! TIco()
 	sy match	TIcoBlueL		/b/ contained
 	sy match	TIcoMagenta		/M/ contained
 	sy match	TIcoMagentaL	/m/ contained
-	sy match	TIcoGrey		/G/ contained
+	sy match	TIcoGrey		/9/ contained
+	sy match	TIcoGreen		/G/ contained
+	sy match	TIcoGreenL		/g/ contained
 
-	hi TIcoBg				ctermfg=Black
+	hi TIcoMainDelimiter	ctermbg=Yellow
+	hi TIcoBg				ctermfg=DarkGrey
 	hi TIcoFg				ctermbg=White
 	hi TIcoRed				ctermfg=Red
 	hi TIcoRedL				ctermfg=LightRed
@@ -293,6 +302,8 @@ fun! TIco()
 	hi TIcoMagenta			ctermfg=Magenta
 	hi TIcoMagentaL			ctermfg=LightMagenta
 	hi TIcoGrey				ctermfg=Grey
+	hi TIcoGreen			ctermfg=Green
+	hi TIcoGreenL			ctermfg=LightGreen
 
 	hi TIcoConfig			ctermfg=White
 endf
@@ -322,7 +333,7 @@ fun! JS()
 	hi jsRegexpString			ctermfg=129
 	hi jsRegexpBoundary			ctermfg=129
 	hi jsRegexpQuantifier		ctermfg=46
-	hi jsRegexpOr				ctermfg=190
+	hi jsRegexpOr				ctermfg=247
 	hi jsRegexpMod				ctermfg=129
 	hi jsRegexpBackRef			ctermfg=202
 	hi jsRegexpGroup			ctermfg=74
@@ -405,8 +416,8 @@ fun! JS()
 	hi jsParensDecorator		ctermfg=172
 	hi jsFuncArgOperator		ctermfg=247
 	hi jsFuncArgCommas			ctermfg=247
-	hi jsClassProperty			ctermfg=247
-	hi jsObjectShorthandProp	ctermfg=247
+	hi jsClassProperty			ctermfg=254
+	hi jsObjectShorthandProp	ctermfg=254
 	hi jsSpreadOperator			ctermfg=247
 	hi jsRestOperator			ctermfg=247
 	hi jsRestExpression			ctermfg=254
@@ -447,6 +458,12 @@ fun! JS()
 	nnor <F2> :CocCommand document.renameCurrentWord<CR>
 endf
 
+" JSON
+
+fun! JSON()
+	syntax match Comment +\/\/.\+$+
+endf
+
 " Git Commit
 
 fun! GitCommit()
@@ -476,13 +493,12 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'Shougo/vimproc.vim'
 
-Plugin 'rust-lang/rust.vim'
 Plugin 'wavded/vim-stylus'
 Plugin 'pangloss/vim-javascript'
 " Plugin expand('file://$FK/_/FkVim'), { 'name': 'FkVim-javascript', 'rtp': 'javascript/' }
 Plugin expand('file://$FK/_/FkVim'), { 'name': 'FkVim-sh', 'rtp': 'sh/' }
 
-Plugin 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plugin 'neoclide/coc.nvim', { 'branch': 'master', 'do': 'yarn install --frozen-lockfile' }
 Plugin 'scrooloose/syntastic'
 let g:syntastic_always_populate_loc_list = 1
 
