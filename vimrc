@@ -71,6 +71,8 @@
 	nmap	c$'	mTF'c"c`f'lc"c``Tc$`T
 	nmap	c$"	mTF"c`f"lc``Tc$`T
 
+	nmap	d()	mpF(xf)x`ph
+
 " Learner
 	map <Left>	<Nop>
 	map <Right>	<Nop>
@@ -484,30 +486,29 @@ fun! L_Port()
 	hi PortNo			ctermfg=LightGreen
 endf
 
-" Vundle
+" Vim-plug
 
-set rtp+=$VIMFILES/bundle/Vundle.vim
-cal vundle#begin(expand('$VIMFILES/bundle'))
+cal plug#begin(expand('$VIMFILES/plugged'))
 
-Plugin 'VundleVim/Vundle.vim'
+Plug 'Shougo/vimproc.vim'
 
-Plugin 'Shougo/vimproc.vim'
+Plug 'wavded/vim-stylus'
+Plug 'pangloss/vim-javascript'
+" Plug expand('file://$FK/_/FkVim'), { 'name': 'FkVim-javascript', 'rtp': 'javascript/' }
+Plug expand('file://$FK/_/FkVim'), { 'name': 'FkVim-sh', 'rtp': 'sh/' }
 
-Plugin 'wavded/vim-stylus'
-Plugin 'pangloss/vim-javascript'
-" Plugin expand('file://$FK/_/FkVim'), { 'name': 'FkVim-javascript', 'rtp': 'javascript/' }
-Plugin expand('file://$FK/_/FkVim'), { 'name': 'FkVim-sh', 'rtp': 'sh/' }
-
-Plugin 'neoclide/coc.nvim', { 'branch': 'master', 'do': 'yarn install --frozen-lockfile' }
-Plugin 'scrooloose/syntastic'
+Plug 'neoclide/coc.nvim', { 'branch': 'master', 'do': 'yarn install --frozen-lockfile' }
+Plug 'scrooloose/syntastic'
 let g:syntastic_always_populate_loc_list = 1
 
-Plugin 'Chiel92/vim-autoformat'
+Plug 'Chiel92/vim-autoformat'
 
-Plugin 'congma/vim-fakeclip' " kana/~ doesn't work on x11
+Plug 'congma/vim-fakeclip' " kana/~ doesn't work on x11
 let g:fakeclip_provide_clipboard_key_mappings = 1
 
-call vundle#end()
+Plug 'neovimhaskell/haskell-vim'
+
+cal plug#end()
 
 filetype plugin indent on
 
