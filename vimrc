@@ -278,8 +278,6 @@ endf
 fun! TIco()
 	" Syntax & Highlight
 
-	sy clear
-
 	sy region	TIcoMain		matchgroup=TIcoMainDelimiter start=/<<</ end=/>>>/ contains=
 		\TIcoBg,TIcoFg,TIcoRed,TIcoRedL,TIcoBlue,TIcoBlueL,TIcoMagenta,TIcoMagentaL,TIcoGrey,TIcoGreen,TIcoGreenL
 	sy match	TIcoBg			/#/ contained
@@ -478,7 +476,7 @@ endf
 
 fun! L_Port()
 	" Syntax & Highlight
-	sy clear
+
 	sy match PortType	/\(^\[\)\@<=[\/>*]\(]\)\@=/
 	sy match PortNo		/\(^\[[\/>*]] \)\@<=\d\+/
 

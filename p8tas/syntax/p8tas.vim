@@ -10,4 +10,5 @@ hi link p8tasIns Keyword
 hi link p8tasNum Number
 hi link p8tasKey String
 
-let b:current_syntax = "potion"
+let b:current_syntax = "p8tas"
+echom "p8tas"
