@@ -9,3 +9,5 @@ syn keyword p8tasKey Dash Jump Up Down Left Right
 hi link p8tasIns Keyword
 hi link p8tasNum Number
 hi link p8tasKey String
+
+let b:current_syntax = "potion"
