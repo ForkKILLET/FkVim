@@ -8,7 +8,6 @@ syn keyword p8tasKey Dash Jump Up Down Left Right
 
 hi link p8tasIns Keyword
 hi link p8tasNum Number
-hi link p8tasKey String
+hi link p8tasKey Identifier
 
 let b:current_syntax = "p8tas"
-echom "p8tas"
