@@ -35,10 +35,12 @@
 	nnor	Sg :w<CR>:!gulp<CR>
 	nnor	Sgg :w<CR>:!gulp 
 
-	nnor	Sr :w<CR>:!rustc % -o ~/src/rust/tmp.out && ~/src/rust/tmp.out<CR>
+	nnor	Sr :w<CR>:!rustc % -o /tmp/vim.rust.out && /vim.rust.out<CR>
 	nnor	Sw :w<CR>:!wasm-pack build -t web<CR>
 	nnor	Sn :w<CR>:!node %<CR>
 	nnor	Se :w<CR>:!node esbuild.cjs<CR>
+	nnor	SE :w<CR>:!yarn test && xclip -selection c build/extend-luogu.user.js<CR><CR>
+	nno		Sc :w<CR>:!gcc % -o /tmp/vim.cpp.out && /tmp/vim.cpp.out<CR>
 
 	nnor	Sy :w<CR>:!xclip -selection c %<CR>
 
@@ -485,6 +487,8 @@ fun! L_Port()
 endf
 
 " Vim-plug
+
+set rtp^="/home/.opam/default/share/ocp-indent/vim"
 
 cal plug#begin(expand('$VIMFILES/plugged'))
 
