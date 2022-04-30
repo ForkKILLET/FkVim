@@ -18,9 +18,9 @@ E "# Linking dotfiles * .vim"
 rm -f ~/.vim/vimrc
 ln -s ~/_/FkVim/vimrc ~/.vim/vimrc
 
-E "# Installing Vundle?"
+E "# Installing vim-plug?"
 $QB
-	git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+	git clone https://github.com/junegunn/vim-plug.git $VIMFILES/autoload
 $QE
 
 E "# Welcoming Vim."
