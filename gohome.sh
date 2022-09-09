@@ -1,29 +1,38 @@
-QB='read -k1 "Q?(y/n) "; if [[ $Q =~ [Yy] ]]; then E;'
+QB='E -n "(y/n) "; read -k1 Q; if [[ $Q =~ [Yy] ]]; then E;'
 QE='else E "\n^"; fi'
 indent=$1
+
+[[ -n "GHPROXY" ]] && G="https://ghproxy.com/"
 
 zsh << SHELL
 
 E() {
 	for i in {0..$indent}; do echo -n "    "; done
-	echo "\$1"
+	echo \$*
 }
 
-E "# Constructing directories"
+EE() {
+	echo -n "\033[32m"
+	E \$*
+    echo -n "\033[0m"
+}
+
+EE "# Constructing directories"
 mkdir -p ~/.vim
 mkdir -p ~/.vim/bundle
 rm -rf ~/.vim/bundle/FkVim
 
-E "# Linking dotfiles * .vim"
+EE -n "# Linking dotfiles"
+E "* .vim"
 rm -f ~/.vim/vimrc
 ln -s ~/_/FkVim/vimrc ~/.vim/vimrc
 
-E "# Installing vim-plug?"
+EE "# Installing vim-plug?"
 $QB
-	git clone https://github.com/junegunn/vim-plug.git $VIMFILES/autoload
+	git clone "${G}https://github.com/junegunn/vim-plug.git" $VIMFILES/autoload
 $QE
 
-E "# Welcoming Vim."
+EE "# Welcoming Vim."
 
 SHELL
 
