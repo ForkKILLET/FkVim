@@ -1,8 +1,7 @@
-QB='E -n "(y/n) "; read -k1 Q; if [[ $Q =~ [Yy] ]]; then E;'
+QB='E -n "\033[34m(y/n) \033[0m"; read -k1 Q; if [[ $Q =~ [Yy] ]]; then E;'
 QE='else E "\n^"; fi'
-indent=$1
 
-echo $indent
+indent=$1
 
 [[ -n "GHPROXY" ]] && G="https://ghproxy.com/"
 
@@ -21,11 +20,9 @@ EE() {
 
 EE "# Constructing directories"
 mkdir -p ~/.vim
-mkdir -p ~/.vim/bundle
-rm -rf ~/.vim/bundle/FkVim
 
-EE -n "# Linking dotfiles"
-E " * .vim"
+EE "# Linking dotfiles"
+E "    * .vim"
 rm -f ~/.vim/vimrc
 ln -s ~/_/FkVim/vimrc ~/.vim/vimrc
 
