@@ -2,12 +2,14 @@ QB='E -n "(y/n) "; read -k1 Q; if [[ $Q =~ [Yy] ]]; then E;'
 QE='else E "\n^"; fi'
 indent=$1
 
+echo $indent
+
 [[ -n "GHPROXY" ]] && G="https://ghproxy.com/"
 
 zsh << SHELL
 
 E() {
-	for i in {0..$indent}; do echo -n "    "; done
+	[[ -n "$indent" ]] && for i in {1..$indent}; do echo -n "    "; done
 	echo \$*
 }
 
@@ -23,7 +25,7 @@ mkdir -p ~/.vim/bundle
 rm -rf ~/.vim/bundle/FkVim
 
 EE -n "# Linking dotfiles"
-E "* .vim"
+E " * .vim"
 rm -f ~/.vim/vimrc
 ln -s ~/_/FkVim/vimrc ~/.vim/vimrc
 
