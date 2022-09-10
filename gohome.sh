@@ -1,5 +1,5 @@
 QB='E -n "\033[34m(y/n) \033[0m"; read -k1 Q; if [[ $Q =~ [Yy] ]]; then E;'
-QE='else E "\n^"; fi'
+QE='else E "\n\033[34m^\033[0m"; fi'
 
 indent=$1
 
@@ -18,6 +18,8 @@ EE() {
     echo -n "\033[0m"
 }
 
+cd ~/_
+
 EE "# Constructing directories"
 mkdir -p ~/.vim
 
@@ -31,7 +33,7 @@ $QB
 	git clone "${G}https://github.com/junegunn/vim-plug.git" $VIMFILES/autoload
 $QE
 
-EE "# Welcoming Vim."
+EE "# Welcoming Vim"
 
 SHELL
 
