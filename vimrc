@@ -1,6 +1,7 @@
 " Basic
 	set		nocompatible
-	set		modelines=0
+	set		modeline
+	set		modelines=2
 
 	set		mouse=a
 	nnor	<silent> <ESC>m :if&mouse=="a"<Bar>set mouse=<Bar>else<Bar>set mouse=a<Bar>endif<CR>
@@ -12,10 +13,8 @@
 
 	set		cursorline
 
-	nnor	ve :vnew $VIMRC<CR> 
-	nnor	vs :source $VIMRC<CR>
-
-	nnor	vl :vnew .eslintrc.cjs<CR>
+	nnor	VE :vnew $VIMRC<CR> 
+	nnor	VS :source $VIMRC<CR>
 
 	set		hlsearch
 	set		incsearch
