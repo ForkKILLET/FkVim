@@ -1,14 +1,10 @@
 QB='E -n "\033[34m(y/n) \033[0m"; read -k1 Q; if [[ $Q =~ [Yy] ]]; then E;'
 QE='else E "\n\033[34m^\033[0m"; fi'
 
-indent=$1
-
-[[ -n "GHPROXY" ]] && G="https://ghproxy.com/"
-
 zsh << SHELL
 
 E() {
-	[[ -n "$indent" ]] && for i in {1..$indent}; do echo -n "    "; done
+	[[ -n "$_GOHOME_INDENT" ]] && for i in {1..$_GOHOME_INDENT}; do echo -n "    "; done
 	echo \$*
 }
 
@@ -30,7 +26,7 @@ ln -s ~/_/FkVim/vimrc ~/.vim/vimrc
 
 EE "# Installing vim-plug?"
 $QB
-	git clone "${G}https://github.com/junegunn/vim-plug.git" $VIMFILES/autoload
+	git clone "${_GOHOME_GITHUB_PREFIX}https://github.com/junegunn/vim-plug.git" $VIMFILES/autoload
 $QE
 
 EE "# Welcoming Vim"

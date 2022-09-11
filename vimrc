@@ -497,8 +497,8 @@ Plug 'wakatime/vim-wakatime'
 
 Plug 'wavded/vim-stylus'
 Plug 'pangloss/vim-javascript'
-Plug expand('file://$FK/_/FkVim'), { 'as': 'FkVim-sh', 'rtp': 'sh/' }
-Plug expand('file://$FK/_/FkVim'), { 'as': 'FkVim-p8tas', 'rtp': 'p8tas/' }
+Plug expand('file://$H/_/FkVim'), { 'as': 'FkVim-sh', 'rtp': 'sh/' }
+Plug expand('file://$H/_/FkVim'), { 'as': 'FkVim-p8tas', 'rtp': 'p8tas/' }
 
 Plug 'neoclide/coc.nvim', { 'branch': 'master', 'do': 'yarn install --frozen-lockfile' }
 Plug 'scrooloose/syntastic'
