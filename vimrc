@@ -39,7 +39,7 @@
 	nnor	Sn :w<CR>:!node %<CR>
 	nnor	Se :w<CR>:!node esbuild.cjs<CR>
 	nnor	SE :w<CR>:!yarn test && xclip -selection c build/extend-luogu.user.js<CR><CR>
-	nno		Sc :w<CR>:!gcc % -o /tmp/vim.cpp.out && /tmp/vim.cpp.out<CR>
+	nnor	Sc :w<CR>:!gcc % -o /tmp/vim.cpp.out && /tmp/vim.cpp.out<CR>
 
 	nnor	Sy :w<CR>:!xclip -selection c %<CR>
 
@@ -49,11 +49,6 @@
 	set		tabstop=4
 	set		softtabstop=4
 	set		foldmethod=indent
-
-    let space_indented = [ 'extend-luogu.user.js', 'exlg-setting/novogui.js', 'novogui.js' ]
-    if index(space_indented, expand('%')) >= 0
-		inor <TAB> <SPACE><SPACE><SPACE><SPACE>
-	end
 
 	set		nowrap
 	nnor	<silent> <ESC>w :set wrap!<CR>
@@ -74,40 +69,59 @@
 
 	nmap	d()	mpF(xf)x`ph
 
-" Learner
-	map <Left>	<Nop>
-	map <Right>	<Nop>
-	map <Up>	<Nop>
-	map <Down>	<Nop>
+" Vim-plug
 
-" Highlight " Vim
-	set		t_Co=256
-	sy on
-	
-	hi LineNr								ctermfg=White
-	hi CursorLine													cterm=underline
-	hi CursorLineNr													cterm=bold
-	
-	hi qfLineNr								ctermfg=DarkGreen
-	
-	hi Folded								ctermfg=Black			ctermbg=Grey
+cal plug#begin(expand('$VIMFILES/plugged'))
+	Plug 'Shougo/vimproc.vim'
 
-	hi Pmenu														ctermbg=LightGrey
+	Plug 'altercation/vim-colors-solarized'
 
-" Highlight " Via
-	hi Annotation							ctermfg=Blue
-	hi AnnotationBracket					ctermfg=Grey
-	hi AnnotationSymbol						ctermfg=Red
-	hi AnnotationComma						ctermfg=Grey
-	hi AnnotationType						ctermfg=DarkBlue		cterm=underline
-	hi AnnotationNote						ctermfg=DarkGrey
+	Plug 'wakatime/vim-wakatime'
+
+	Plug 'wavded/vim-stylus'
+
+	Plug 'pangloss/vim-javascript'
+
+	Plug expand('file://$H/_/FkVim'), { 'as': 'FkVim-sh', 'rtp': 'sh/' }
+	Plug expand('file://$H/_/FkVim'), { 'as': 'FkVim-p8tas', 'rtp': 'p8tas/' }
+
+	Plug 'scrooloose/syntastic'
+	let g:syntastic_always_populate_loc_list = 1
+
+	Plug 'Chiel92/vim-autoformat'
+
+	Plug 'congma/vim-fakeclip' " kana/~ doesn't work on x11
+	let g:fakeclip_provide_clipboard_key_mappings = 1
+
+	Plug 'neovimhaskell/haskell-vim'
+
+	Plug 'junegunn/fzf'
+	nnor	<F3> :FZF<CR>
+
+	Plug 'SirVer/ultisnips'
+
+	Plug 'neoclide/coc.nvim', { 'branch': 'master', 'do': 'yarn install --frozen-lockfile' }
+	let g:coc_global_extensions = [
+		\ 'coc-pairs',	
+		\ 'coc-json',
+		\ 'coc-git',
+		\ 'coc-tsserver',
+		\ 'coc-yaml'
+		\ ]
+
+	inor	<silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+	nnor	<F2> :CocCommand document.renameCurrentWord<CR>
+
+cal plug#end()
 
 " FtDetect
+
 aug FtDetect | au!
 	au BufRead,BufNewFile	*.via			setf via			" VIm Annotated
 	au BufRead,BufNewFile	*.tico			setf tico			" Text ICOn
 	au BufRead,BufNewFile	*.mcmeta		setf json
 	au BufRead,BufNewFile	*.styl			setf stylus
+	au BufRead,BufNewFile	ghci.conf		setf haskell
 	au BufRead,BufNewFile	log-port		setf log_port
 	au BufRead,BufNewFile	log-hist		setf plain
 	au BufRead,BufNewFile	log-*			setf markdown
@@ -115,13 +129,27 @@ aug FtDetect | au!
 	au FileType				via				cal VimAnn()
 	au FileType				tico			cal TIco()
 	au FileType				javascript		cal JS()
-	au FileType				gitcommit		cal GitCommit()
 	au FileType				log_port		cal L_Port()
 aug END
 
+" Highlight
+
+	set		t_Co=256
+	set		background=dark
+
+	let		g:solarized_termcolors=256
+	color	solarized
+
+	sy		enable
+	filet	plugin indent on
+
+	hi		qfLineNr	ctermfg=Green
+	" Got this from < https://github.com/neoclide/coc.nvim/issues/4011 >
+	hi		CocMenuSel	ctermbg=239
 " Via
 
 let g:via_map = 'English'
+
 fun! VimAnn()
 	setl	nofoldenable
 
@@ -131,7 +159,7 @@ fun! VimAnn()
 		let b:via_syn = 1
 		" echom '[via] Syn: ' . (&ft == 'via' ? 'main' : 'loc') . '.'
 
-		sy match	Annotation			/(.\{-})/				contains=
+		sy match	Annotation			/(.\{0,32})/				contains=
 			\AnnotationBracket,AnnotationSymbol,AnnotationComma,
 			\AnnotationType,AnnotationNote
 		sy match	AnnotationBracket	/[()]/					contained
@@ -141,6 +169,15 @@ fun! VimAnn()
 		sy match	AnnotationNote		/\(:\)\@<=[^)]\+/		contained
 	endfun
 	cal SynAnn()
+
+	" Highlight
+
+	hi Annotation							ctermfg=Blue
+	hi AnnotationBracket					ctermfg=Grey
+	hi AnnotationSymbol						ctermfg=Red
+	hi AnnotationComma						ctermfg=Grey
+	hi AnnotationType						ctermfg=DarkBlue		cterm=underline
+	hi AnnotationNote						ctermfg=DarkGrey
 
 	" Map
 
@@ -204,7 +241,7 @@ fun! VimAnn()
 		let i = 0 | whi i < len(ls)
 			let aR = { 'R': i, 'ann': [] }
 			let j = 0 | whi 1
-				let r = matchstrpos(ls[i], '[A-Za-z\-]\{-}(.\{-})', j)
+				let r = matchstrpos(ls[i], '[A-Za-z\-]\{-}(.\{0,32})', j)
 				let j = r[2]
 				if j == -1 | brea | endif
 				let aC = { 'C': r[1], 'txt': r[0] }
@@ -313,150 +350,143 @@ endf
 
 fun! JS()
 	" Indent
-	set foldmethod=syntax
+
+		set foldmethod=syntax
 
 	" Highlight
 
-	hi jsComment				ctermfg=21		cterm=italic
-	hi jsEnvComment				ctermfg=21		cterm=italic,underline
-	" hi jsParensIfElse			
-	" hi jsParensRepeat
-	" hi jsParensSwitch
-	" hi jsParensCatch
-	" hi jsCommentTodo
-	hi jsString					ctermfg=129
-	hi jsObjectKeyString		ctermfg=129
-	hi jsTemplateString			ctermfg=129
-	hi jsObjectStringKey		ctermfg=129
-	hi jsClassStringKey			ctermfg=129
-	hi jsTaggedTemplate			ctermfg=20
-	hi jsTernaryIfOperator		ctermfg=247
-	hi jsRegexpString			ctermfg=129
-	hi jsRegexpBoundary			ctermfg=129
-	hi jsRegexpQuantifier		ctermfg=46
-	hi jsRegexpOr				ctermfg=247
-	hi jsRegexpMod				ctermfg=129
-	hi jsRegexpBackRef			ctermfg=202
-	hi jsRegexpGroup			ctermfg=74
-	hi jsRegexpCharClass		ctermfg=74
-	hi jsCharacter				ctermfg=129
-	hi jsPrototype				ctermfg=205
-	hi jsConditional			ctermfg=37		cterm=bold
-	hi jsBranch					ctermfg=37
-	hi jsLabel					ctermfg=202
-	hi jsReturn					ctermfg=27		cterm=bold
-	hi jsRepeat					ctermfg=41		cterm=bold
-	hi jsDo						ctermfg=41		cterm=bold
-	hi jsStatement				ctermfg=27		cterm=bold
-	hi jsException				ctermfg=196		cterm=bold
-	hi jsTry					ctermfg=196		cterm=bold
-	hi jsFinally				ctermfg=196		cterm=bold
-	hi jsCatch					ctermfg=196		cterm=bold
-	hi jsAsyncKeyword			ctermfg=208		cterm=bold
-	hi jsForAwait				ctermfg=208		cterm=bold
-	hi jsArrowFunction			ctermfg=74
-	hi jsFunction				ctermfg=69		cterm=bold
-	hi jsGenerator				ctermfg=208		cterm=bold
-	hi jsArrowFuncArgs			ctermfg=254
-	hi jsFuncName				ctermfg=254
-	hi jsFuncCall				ctermfg=254
-	hi jsClassFuncName			ctermfg=254
-	hi jsObjectFuncName			ctermfg=254
-	hi jsArguments				ctermfg=254
-	hi jsError					ctermbg=197
-	hi jsParensError			ctermbg=197
-	hi jsOperatorKeyword		ctermfg=247		cterm=bold
-	hi jsOperator				ctermfg=247
-	hi jsOf						ctermfg=14		cterm=none
-	hi jsStorageClass			ctermfg=69		cterm=bold
-	hi jsClassKeyword			ctermfg=205		cterm=bold
-	hi jsExtendsKeyword			ctermfg=247		cterm=bold
-	hi jsThis					ctermfg=205
-	hi jsSuper					ctermfg=205
-	hi jsNan					ctermfg=46
-	hi jsNull					ctermfg=46
-	hi jsUndefined				ctermfg=49
-	hi jsNumber					ctermfg=46
-	hi jsFloat					ctermfg=46
-	hi jsBooleanTrue			ctermfg=49
-	hi jsBooleanFalse			ctermfg=49
-	hi jsObjectColon			ctermfg=247
-	hi jsNoise					ctermfg=247
-	hi jsDot					ctermfg=247
-	hi jsBrackets				ctermfg=74
-	hi jsParens					ctermfg=74
-	hi jsBraces					ctermfg=74
-	hi jsFuncBraces				ctermfg=74
-	hi jsFuncParens				ctermfg=74
-	hi jsClassBraces			ctermfg=74
-	hi jsClassNoise				ctermfg=247
-	hi jsIfElseBraces			ctermfg=74
-	hi jsTryCatchBraces			ctermfg=74
-	hi jsModuleBraces			ctermfg=74
-	hi jsObjectBraces			ctermfg=247
-	hi jsObjectSeparator		ctermfg=247
-	hi jsFinallyBraces			ctermfg=74
-	hi jsRepeatBraces			ctermfg=74
-	hi jsSwitchBraces			ctermfg=74
-	hi jsSpecial				ctermfg=99
-	hi jsTemplateBraces			ctermfg=99
-	hi jsGlobalObjects			ctermfg=118		cterm=underline
-	hi jsGlobalNodeObjects		ctermfg=14		cterm=bold
-	hi jsExceptions				ctermfg=196
-	hi jsBuiltins				ctermfg=118		cterm=underline
-	hi jsImport					ctermfg=14		cterm=bold
-	hi jsExport					ctermfg=14		cterm=bold
-	hi jsExportDefault			ctermfg=208
-	hi jsExportDefaultGroup		ctermfg=208
-	hi jsModuleAs				ctermfg=247
-	hi jsModuleComma			ctermfg=247
-	hi jsModuleAsterisk			ctermfg=208
-	hi jsFrom					ctermfg=14
-	hi jsDecorator				ctermfg=172
-	hi jsDecoratorFunction		ctermfg=172
-	hi jsParensDecorator		ctermfg=172
-	hi jsFuncArgOperator		ctermfg=247
-	hi jsFuncArgCommas			ctermfg=247
-	hi jsClassProperty			ctermfg=254
-	hi jsObjectShorthandProp	ctermfg=254
-	hi jsSpreadOperator			ctermfg=247
-	hi jsRestOperator			ctermfg=247
-	hi jsRestExpression			ctermfg=254
-	hi jsSwitchColon			ctermfg=247
-	hi jsClassMethodType		ctermfg=208		cterm=bold
-	hi jsObjectMethodType		ctermfg=208		cterm=bold
-	hi jsClassDefinition		ctermfg=205		cterm=bold
-	hi jsBlockLabel				ctermfg=202
-	hi jsBlockLabelKey			ctermfg=202
+		hi jsComment				ctermfg=21		cterm=italic
+		hi jsEnvComment				ctermfg=21		cterm=italic,underline
+		" hi jsParensIfElse			
+		" hi jsParensRepeat
+		" hi jsParensSwitch
+		" hi jsParensCatch
+		" hi jsCommentTodo
+		hi jsString					ctermfg=129
+		hi jsObjectKeyString		ctermfg=129
+		hi jsTemplateString			ctermfg=129
+		hi jsObjectStringKey		ctermfg=129
+		hi jsClassStringKey			ctermfg=129
+		hi jsTaggedTemplate			ctermfg=20
+		hi jsTernaryIfOperator		ctermfg=247
+		hi jsRegexpString			ctermfg=129
+		hi jsRegexpBoundary			ctermfg=129
+		hi jsRegexpQuantifier		ctermfg=46
+		hi jsRegexpOr				ctermfg=247
+		hi jsRegexpMod				ctermfg=129
+		hi jsRegexpBackRef			ctermfg=202
+		hi jsRegexpGroup			ctermfg=74
+		hi jsRegexpCharClass		ctermfg=74
+		hi jsCharacter				ctermfg=129
+		hi jsPrototype				ctermfg=205
+		hi jsConditional			ctermfg=37		cterm=bold
+		hi jsBranch					ctermfg=37
+		hi jsLabel					ctermfg=202
+		hi jsReturn					ctermfg=27		cterm=bold
+		hi jsRepeat					ctermfg=41		cterm=bold
+		hi jsDo						ctermfg=41		cterm=bold
+		hi jsStatement				ctermfg=27		cterm=bold
+		hi jsException				ctermfg=196		cterm=bold
+		hi jsTry					ctermfg=196		cterm=bold
+		hi jsFinally				ctermfg=196		cterm=bold
+		hi jsCatch					ctermfg=196		cterm=bold
+		hi jsAsyncKeyword			ctermfg=208		cterm=bold
+		hi jsForAwait				ctermfg=208		cterm=bold
+		hi jsArrowFunction			ctermfg=74
+		hi jsFunction				ctermfg=69		cterm=bold
+		hi jsGenerator				ctermfg=208		cterm=bold
+		hi jsArrowFuncArgs			ctermfg=254
+		hi jsFuncName				ctermfg=254
+		hi jsFuncCall				ctermfg=254
+		hi jsClassFuncName			ctermfg=254
+		hi jsObjectFuncName			ctermfg=254
+		hi jsArguments				ctermfg=254
+		hi jsError					ctermbg=197
+		hi jsParensError			ctermbg=197
+		hi jsOperatorKeyword		ctermfg=247		cterm=bold
+		hi jsOperator				ctermfg=247
+		hi jsOf						ctermfg=14		cterm=none
+		hi jsStorageClass			ctermfg=69		cterm=bold
+		hi jsClassKeyword			ctermfg=205		cterm=bold
+		hi jsExtendsKeyword			ctermfg=247		cterm=bold
+		hi jsThis					ctermfg=205
+		hi jsSuper					ctermfg=205
+		hi jsNan					ctermfg=46
+		hi jsNull					ctermfg=46
+		hi jsUndefined				ctermfg=49
+		hi jsNumber					ctermfg=46
+		hi jsFloat					ctermfg=46
+		hi jsBooleanTrue			ctermfg=49
+		hi jsBooleanFalse			ctermfg=49
+		hi jsObjectColon			ctermfg=247
+		hi jsNoise					ctermfg=247
+		hi jsDot					ctermfg=247
+		hi jsBrackets				ctermfg=74
+		hi jsParens					ctermfg=74
+		hi jsBraces					ctermfg=74
+		hi jsFuncBraces				ctermfg=74
+		hi jsFuncParens				ctermfg=74
+		hi jsClassBraces			ctermfg=74
+		hi jsClassNoise				ctermfg=247
+		hi jsIfElseBraces			ctermfg=74
+		hi jsTryCatchBraces			ctermfg=74
+		hi jsModuleBraces			ctermfg=74
+		hi jsObjectBraces			ctermfg=247
+		hi jsObjectSeparator		ctermfg=247
+		hi jsFinallyBraces			ctermfg=74
+		hi jsRepeatBraces			ctermfg=74
+		hi jsSwitchBraces			ctermfg=74
+		hi jsSpecial				ctermfg=99
+		hi jsTemplateBraces			ctermfg=99
+		hi jsGlobalObjects			ctermfg=118		cterm=underline
+		hi jsGlobalNodeObjects		ctermfg=14		cterm=bold
+		hi jsExceptions				ctermfg=196
+		hi jsBuiltins				ctermfg=118		cterm=underline
+		hi jsImport					ctermfg=14		cterm=bold
+		hi jsExport					ctermfg=14		cterm=bold
+		hi jsExportDefault			ctermfg=208
+		hi jsExportDefaultGroup		ctermfg=208
+		hi jsModuleAs				ctermfg=247
+		hi jsModuleComma			ctermfg=247
+		hi jsModuleAsterisk			ctermfg=208
+		hi jsFrom					ctermfg=14
+		hi jsDecorator				ctermfg=172
+		hi jsDecoratorFunction		ctermfg=172
+		hi jsParensDecorator		ctermfg=172
+		hi jsFuncArgOperator		ctermfg=247
+		hi jsFuncArgCommas			ctermfg=247
+		hi jsClassProperty			ctermfg=254
+		hi jsObjectShorthandProp	ctermfg=254
+		hi jsSpreadOperator			ctermfg=247
+		hi jsRestOperator			ctermfg=247
+		hi jsRestExpression			ctermfg=254
+		hi jsSwitchColon			ctermfg=247
+		hi jsClassMethodType		ctermfg=208		cterm=bold
+		hi jsObjectMethodType		ctermfg=208		cterm=bold
+		hi jsClassDefinition		ctermfg=205		cterm=bold
+		hi jsBlockLabel				ctermfg=202
+		hi jsBlockLabelKey			ctermfg=202
 
-	hi jsDestructuringBraces		ctermfg=74
-	hi jsDestructuringProperty		ctermfg=254
-	hi jsDestructuringAssignment	ctermfg=254
-	hi jsDestructuringNoise			ctermfg=247
+		hi jsDestructuringBraces		ctermfg=74
+		hi jsDestructuringProperty		ctermfg=254
+		hi jsDestructuringAssignment	ctermfg=254
+		hi jsDestructuringNoise			ctermfg=247
 
-	" hi jsCommentFunction
-	" hi jsCommentClass
-	" hi jsCommentIfElse
-	" hi jsCommentRepeat
+		" hi jsCommentFunction
+		" hi jsCommentClass
+		" hi jsCommentIfElse
+		" hi jsCommentRepeat
 
-	" hi jsDomErrNo
-	" hi jsDomNodeConsts
-	" hi jsDomElemAttrs
-	" hi jsDomElemFuncs
+		" hi jsDomErrNo
+		" hi jsDomNodeConsts
+		" hi jsDomElemAttrs
+		" hi jsDomElemFuncs
 
-	" hi jsHtmlEvents
-	" hi jsHtmlElemAttrs
-	" hi jsHtmlElemFuncs
+		" hi jsHtmlEvents
+		" hi jsHtmlElemAttrs
+		" hi jsHtmlElemFuncs
 
-	" hi jsCssStyles
-
-	" Snip
-
-	inor <C-\>cl console.log()<Left>
-	
-	" Coc
-	
-	nnor <F2> :CocCommand document.renameCurrentWord<CR>
+		" hi jsCssStyles
 endf
 
 " JSON
@@ -465,55 +495,19 @@ fun! JSON()
 	syntax match Comment +\/\/.\+$+
 endf
 
-" Git Commit
-
-fun! GitCommit()
-	" Snip
-
-	inor \vt VER <C-R>=strftime("%y%m%d")<CR>
-endf
-
 " Log Port
 
 fun! L_Port()
-	" Syntax & Highlight
+	" Syntax 
 
-	sy match PortType	/\(^\[\)\@<=[\/>*]\(]\)\@=/
-	sy match PortNo		/\(^\[[\/>*]] \)\@<=\d\+/
+		sy match PortType	/\(^\[\)\@<=[\/>*]\(]\)\@=/
+		sy match PortNo		/\(^\[[\/>*]] \)\@<=\d\+/
 
-	hi PortType			ctermfg=Yellow
-	hi PortNo			ctermfg=LightGreen
+	" Highlight
+
+		hi PortType			ctermfg=Yellow
+		hi PortNo			ctermfg=LightGreen
 endf
-
-" Vim-plug
-
-set rtp^="/home/.opam/default/share/ocp-indent/vim"
-
-cal plug#begin(expand('$VIMFILES/plugged'))
-
-Plug 'Shougo/vimproc.vim'
-
-Plug 'wakatime/vim-wakatime'
-
-Plug 'wavded/vim-stylus'
-Plug 'pangloss/vim-javascript'
-Plug expand('file://$H/_/FkVim'), { 'as': 'FkVim-sh', 'rtp': 'sh/' }
-Plug expand('file://$H/_/FkVim'), { 'as': 'FkVim-p8tas', 'rtp': 'p8tas/' }
-
-Plug 'neoclide/coc.nvim', { 'branch': 'master', 'do': 'yarn install --frozen-lockfile' }
-Plug 'scrooloose/syntastic'
-let g:syntastic_always_populate_loc_list = 1
-
-Plug 'Chiel92/vim-autoformat'
-
-Plug 'congma/vim-fakeclip' " kana/~ doesn't work on x11
-let g:fakeclip_provide_clipboard_key_mappings = 1
-
-Plug 'neovimhaskell/haskell-vim'
-
-cal plug#end()
-
-filetype plugin indent on
 
 " Utility
 
