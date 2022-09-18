@@ -25,7 +25,6 @@
 	vnor	s y<ESC>:%s/\<<C-R>"\>/
 	vnor	<C-S> y<ESC>:%s/<C-R>"/
 
-	nnor	?? :h 
 	nnor	S :w<CR>
 	nnor	Sq :wq<CR>
 
@@ -60,8 +59,8 @@
 	nnor	cx' mqF'xf'x`ql
 	nnor	cx"	mqF"xf"x`ql
 
-    nnor    'iw mQbi'<ESC>Ea'<ESC>`Ql
-    nnor    "iw mQbi"<ESC>Ea"<ESC>`Ql
+	nnor	'iw mQbi'<ESC>Ea'<ESC>`Ql
+	nnor	"iw mQbi"<ESC>Ea"<ESC>`Ql
 
 	nnor	c$	F`dt+df<SPACE>i${<ESC>f`xdT+dF<SPACE>i}<ESC>
 	nmap	c$'	mTF'c"c`f'lc"c``Tc$`T
@@ -114,24 +113,6 @@ cal plug#begin(expand('$VIMFILES/plugged'))
 
 cal plug#end()
 
-" FtDetect
-
-aug FtDetect | au!
-	au BufRead,BufNewFile	*.via			setf via			" VIm Annotated
-	au BufRead,BufNewFile	*.tico			setf tico			" Text ICOn
-	au BufRead,BufNewFile	*.mcmeta		setf json
-	au BufRead,BufNewFile	*.styl			setf stylus
-	au BufRead,BufNewFile	ghci.conf		setf haskell
-	au BufRead,BufNewFile	log-port		setf log_port
-	au BufRead,BufNewFile	log-hist		setf plain
-	au BufRead,BufNewFile	log-*			setf markdown
-	au FileType				json			cal JSON()
-	au FileType				via				cal VimAnn()
-	au FileType				tico			cal TIco()
-	au FileType				javascript		cal JS()
-	au FileType				log_port		cal L_Port()
-aug END
-
 " Highlight
 
 	set		t_Co=256
@@ -146,20 +127,38 @@ aug END
 	hi		qfLineNr	ctermfg=Green
 	" Got this from < https://github.com/neoclide/coc.nvim/issues/4011 >
 	hi		CocMenuSel	ctermbg=239
+
+" FtDetect
+
+aug FtDetect | au!
+	au BufRead,BufNewFile	*.via			setf via			" VIm Annotated
+	au BufRead,BufNewFile	*.tico			setf tico			" Text ICOn
+	au BufRead,BufNewFile	*.mcmeta		setf json
+	au BufRead,BufNewFile	*.styl			setf stylus
+	au BufRead,BufNewFile	ghci.conf		setf haskell
+	au BufRead,BufNewFile	log-port		setf log_port
+	au BufRead,BufNewFile	log-hist		setf plain
+	au BufRead,BufNewFile	log-via-*		setf via
+	au BufRead,BufNewFile	log-*			setf markdown
+	au FileType				json			cal JSON()
+	au FileType				via				cal VimAnn()
+	au FileType				tico			cal TIco()
+	au FileType				javascript		cal JS()
+	au FileType				log_port		cal L_Port()
+aug END
+
 " Via
 
 let g:via_map = 'English'
 
 fun! VimAnn()
 	setl	nofoldenable
+	setl	wrap
 
 	" Syntax
-	fun! SynAnn()
-		if exists('b:via_syn') | retu | endif
-		let b:via_syn = 1
-		" echom '[via] Syn: ' . (&ft == 'via' ? 'main' : 'loc') . '.'
 
-		sy match	Annotation			/(.\{0,32})/				contains=
+	fun! SynAnn()
+		sy match	Annotation			/(.\{0,32})/			contains=
 			\AnnotationBracket,AnnotationSymbol,AnnotationComma,
 			\AnnotationType,AnnotationNote
 		sy match	AnnotationBracket	/[()]/					contained
@@ -172,12 +171,12 @@ fun! VimAnn()
 
 	" Highlight
 
-	hi Annotation							ctermfg=Blue
-	hi AnnotationBracket					ctermfg=Grey
-	hi AnnotationSymbol						ctermfg=Red
-	hi AnnotationComma						ctermfg=Grey
-	hi AnnotationType						ctermfg=DarkBlue		cterm=underline
-	hi AnnotationNote						ctermfg=DarkGrey
+		hi Annotation							ctermfg=Blue
+		hi AnnotationBracket					ctermfg=Grey
+		hi AnnotationSymbol						ctermfg=Red
+		hi AnnotationComma						ctermfg=Grey
+		hi AnnotationType						ctermfg=Red		cterm=underline
+		hi AnnotationNote						ctermfg=Green
 
 	" Map
 
@@ -228,13 +227,8 @@ fun! VimAnn()
 
 	cal _umap('CopyCurWord', '<ESC>mUyiw`Ua', 'i')
 
-	setl	iskeyword+=-
-	iabb	via-h 
-		\(Title         @)<CR>
-		\(LocaleTitle   @)<CR>
-		\(Author        @)<CR>
-
 	" Annotation location window
+
 	fun! GetAnn(fmt)
 		let ls = getline(1, '$')
 		let a = []
@@ -286,7 +280,6 @@ fun! VimAnn()
 		endfun
 
 		cal setloclist(0, [])
-		" echom '[via] Clr.'
 		
 		let a = GetAnn(funcref('EngAnn'))
 		let is = []
@@ -306,9 +299,9 @@ fun! VimAnn()
 		cal setloclist(0, [], 'r', {
 			\ 'title': 'Annotations', 'items': is,
 			\ 'quickfixtextfunc': 'TxtAnn' })
-		" echom '[via] Upd.'
-		if exists("b:via_syn") | unlet b:via_syn | endif
 	endfun
+
+	cal UpdAnn()
 endf
 
 " TIco
