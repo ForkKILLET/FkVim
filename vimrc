@@ -26,6 +26,7 @@
 	vnor	<C-S> y<ESC>:%s/<C-R>"/
 
 	nnor	S :w<CR>
+	nnor	SS :w !sudo tee %<CR>
 	nnor	Sq :wq<CR>
 
 	set		undodir=$VIMFILES/undodir
@@ -99,24 +100,30 @@ cal plug#begin(expand('$VIMFILES/plugged'))
 
 	Plug 'SirVer/ultisnips'
 
-	Plug 'neoclide/coc.nvim', { 'branch': 'master', 'do': 'yarn install --frozen-lockfile' }
-	let g:coc_global_extensions = [
-		\ 'coc-pairs',	
-		\ 'coc-json',
-		\ 'coc-git',
-		\ 'coc-tsserver',
-		\ 'coc-yaml'
-		\ ]
+	let has_nodejs = system('node -v') =~ 'v*'
 
-	inor	<silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
-	nnor	<F2> :CocCommand document.renameCurrentWord<CR>
+	if has_nodejs
+		Plug 'neoclide/coc.nvim', { 'branch': 'master', 'do': 'yarn install --frozen-lockfile' }
+		let g:coc_global_extensions = [
+			\ 'coc-pairs',	
+			\ 'coc-json',
+			\ 'coc-git',
+			\ 'coc-tsserver',
+			\ 'coc-yaml'
+			\ ]
+
+		inor	<silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+		nnor	<F2> :CocCommand document.renameCurrentWord<CR>
+		nnor	<F10> :CocDiagnostics<CR>
+		nnor	<F6> :CocCommand editor.action.formatDocument<CR>
+	endif
 
 cal plug#end()
 
 " Highlight
 
 	set		t_Co=256
-	set		background=dark
+	let		&background = $VIMBG
 
 	let		g:solarized_termcolors=256
 	color	solarized
