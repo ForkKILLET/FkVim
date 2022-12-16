@@ -39,7 +39,6 @@
 	nnor	Sw :w<CR>:!wasm-pack build -t web<CR>
 	nnor	Sn :w<CR>:!node %<CR>
 	nnor	Se :w<CR>:!node esbuild.cjs<CR>
-	nnor	SE :w<CR>:!yarn test && xclip -selection c build/extend-luogu.user.js<CR><CR>
 	nnor	Sc :w<CR>:!gcc % -o /tmp/vim.cpp.out && /tmp/vim.cpp.out<CR>
 	nnor	Sp :w<CR>:!python3 %<CR>
 
