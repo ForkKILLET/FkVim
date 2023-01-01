@@ -40,6 +40,7 @@
 	nnor	Se :w<CR>:!node esbuild.cjs<CR>
 	nnor	SE :w<CR>:!yarn test && xclip -selection c build/extend-luogu.user.js<CR><CR>
 	nnor	Sc :w<CR>:!gcc % -o /tmp/vim.cpp.out && /tmp/vim.cpp.out<CR>
+	nnor	Sp :w<CR>:!python3 %<CR>
 
 	nnor	Sy :w<CR>:!xclip -selection c %<CR>
 
@@ -98,6 +99,7 @@ cal plug#begin(expand('$VIMFILES/plugged'))
 	Plug 'junegunn/fzf'
 	nnor	<F3> :FZF<CR>
 
+	Plug 'honza/vim-snippets'
 	Plug 'SirVer/ultisnips'
 
 	let has_nodejs = system('node -v') =~ 'v*'
