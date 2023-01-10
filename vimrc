@@ -111,7 +111,8 @@ cal plug#begin(expand('$VIMFILES/plugged'))
 			\ 'coc-json',
 			\ 'coc-git',
 			\ 'coc-tsserver',
-			\ 'coc-yaml'
+			\ 'coc-yaml',
+			\ 'coc-vimlsp'
 			\ ]
 
 		inor	<silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
@@ -125,7 +126,13 @@ cal plug#end()
 " Highlight
 
 	set		t_Co=256
-	let		&background = $VIMBG
+
+	" See <https://askubuntu.com/questions/743610/setting-vim-background-mode-depeding-on-time-of-day>
+	fun! s:set_bg(timer_id)
+		let &background = (strftime('%H') < 13 ? 'light' : 'dark')
+	endfun
+	call timer_start(1000 * 60, function('s:set_bg'), {'repeat': -1})
+	call s:set_bg(0)
 
 	let		g:solarized_termcolors=256
 	color	solarized
@@ -275,10 +282,10 @@ fun! VimAnn()
 		endfun
 
 		fun! TxtAnn(d)
-			let is = getloclist(0, { 'id': a:d.id, 'items': 1 }).items
+			let items = getloclist(0, { 'id': a:d.id, 'items': 1 }).items
 			let ls = []
 			for i in range(a:d.start_idx - 1, a:d.end_idx - 1)
-				let it = is[i]
+				let it = items[i]
 				cal add(ls,
 					\ it.type . '|' .
 					\ _space(it.lnum, 4) . ', ' .
@@ -291,7 +298,7 @@ fun! VimAnn()
 		cal setloclist(0, [])
 		
 		let a = GetAnn(funcref('EngAnn'))
-		let is = []
+		let items = []
 		for aR in a
 			for aC in aR.ann
 				let m = aC.tar == "" && exists("aC.meta")
@@ -301,12 +308,12 @@ fun! VimAnn()
 					\ 'text': (m ? aC.meta[0] . ' @ ' . aC.meta[1]
 					\			 : aC.txt),
 					\ 'bufnr': bufnr() }
-				cal add(is, it)
+				cal add(items, it)
 			endfor
 		endfor
 		
 		cal setloclist(0, [], 'r', {
-			\ 'title': 'Annotations', 'items': is,
+			\ 'title': 'Annotations', 'items': items,
 			\ 'quickfixtextfunc': 'TxtAnn' })
 	endfun
 
