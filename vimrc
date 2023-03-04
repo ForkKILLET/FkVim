@@ -26,6 +26,7 @@
 	vnor	<C-S> y<ESC>:%s/<C-R>"/
 
 	nnor	S :w<CR>
+	nnor	Q :q<CR>
 	nnor	SS :w !sudo tee %<CR>
 	nnor	Sq :wq<CR>
 
@@ -103,8 +104,9 @@ cal plug#begin(expand('$VIMFILES/plugged'))
 	Plug 'SirVer/ultisnips'
 
 	let has_nodejs = system('node -v') =~ 'v*'
+	let not_termux = ! system('uname -o') =~ 'Android'
 
-	if has_nodejs
+	if has_nodejs && not_termux
 		Plug 'neoclide/coc.nvim', { 'branch': 'master', 'do': 'yarn install --frozen-lockfile' }
 		let g:coc_global_extensions = [
 			\ 'coc-pairs',	
@@ -119,7 +121,7 @@ cal plug#begin(expand('$VIMFILES/plugged'))
 		nnor	<F2> :CocCommand document.renameCurrentWord<CR>
 		nnor	<F10> :CocDiagnostics<CR>
 		nnor	<F6> :CocCommand editor.action.formatDocument<CR>
-	endif
+	end
 
 cal plug#end()
 
@@ -161,6 +163,7 @@ aug FtDetect | au!
 	au FileType				tico			cal TIco()
 	au FileType				javascript		cal JS()
 	au FileType				log_port		cal L_Port()
+	au FileType				markdown		cal Markdown()
 aug END
 
 " Via
@@ -516,6 +519,10 @@ fun! L_Port()
 
 		hi PortType			ctermfg=Yellow
 		hi PortNo			ctermfg=LightGreen
+endf
+
+fun! Markdown()
+	inor <C-S>now <ESC>:r! node -e 'console.log(new Date().toString().replace(/ \(.*/,""))'<CR>i<BS><ESC>A
 endf
 
 " Utility
