@@ -164,6 +164,7 @@ aug FtDetect | au!
 	au FileType				javascript		cal JS()
 	au FileType				log_port		cal L_Port()
 	au FileType				markdown		cal Markdown()
+	au FileType				yaml			cal YAML()
 aug END
 
 " Via
@@ -523,6 +524,10 @@ endf
 
 fun! Markdown()
 	inor <C-S>now <ESC>:r! node -e 'console.log(new Date().toString().replace(/ \(.*/,""))'<CR>i<BS><ESC>A
+endf
+
+fun! YAML()
+	inor <C-S>now <ESC>:r! node -e 'console.log(new Date().toISOString())'<CR>i<BS><ESC>A
 endf
 
 " Utility
