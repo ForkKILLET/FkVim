@@ -41,6 +41,7 @@
 	nnor	Se :w<CR>:!node esbuild.cjs<CR>
 	nnor	Sc :w<CR>:!gcc % -o /tmp/vim.cpp.out && /tmp/vim.cpp.out<CR>
 	nnor	Sp :w<CR>:!python3 %<CR>
+	nnor	S. :w<CR>:!./%<CR>
 
 	nnor	Sy :w<CR>:!xclip -selection c %<CR>
 
