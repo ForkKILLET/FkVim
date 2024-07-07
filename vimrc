@@ -35,7 +35,7 @@
 	nnor	Sg :w<CR>:!gulp<CR>
 	nnor	Sgg :w<CR>:!gulp 
 
-	nnor	Sr :w<CR>:!rustc % -o /tmp/vim.rust.out && /vim.rust.out<CR>
+	nnor	Sr :w<CR>:!rustc % -o /tmp/vim.rust.out && /tmp/vim.rust.out<CR>
 	nnor	Sw :w<CR>:!wasm-pack build -t web<CR>
 	nnor	Sn :w<CR>:!node %<CR>
 	nnor	Se :w<CR>:!node esbuild.cjs<CR>
@@ -100,8 +100,8 @@ cal plug#begin(expand('$VIMFILES/plugged'))
 	Plug 'junegunn/fzf'
 	nnor	<F3> :FZF<CR>
 
-	Plug 'honza/vim-snippets'
-	Plug 'SirVer/ultisnips'
+	" Plug 'honza/vim-snippets'
+	" Plug 'SirVer/ultisnips'
 
 	let has_nodejs = system('node -v') =~ 'v*'
 	let not_termux = ! system('uname -o') =~ 'Android'
@@ -131,7 +131,7 @@ cal plug#end()
 
 	" See <https://askubuntu.com/questions/743610/setting-vim-background-mode-depeding-on-time-of-day>
 	fun! s:set_bg(timer_id)
-		let &background = (strftime('%H') < 13 ? 'light' : 'dark')
+		let &background = (strftime('%H') < 7 ? 'light' : 'dark')
 	endfun
 	call timer_start(1000 * 60, function('s:set_bg'), {'repeat': -1})
 	call s:set_bg(0)
