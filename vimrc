@@ -154,24 +154,27 @@ aug FtDetect | au!
 	au BufRead,BufNewFile	*.mcmeta		setf json
 	au BufRead,BufNewFile	*.styl			setf stylus
 	au BufRead,BufNewFile	ghci.conf		setf haskell
-	au BufRead,BufNewFile	log-port		setf log_port
 	au BufRead,BufNewFile	log-hist		setf plain
 	au BufRead,BufNewFile	log-via-*		setf via
 	au BufRead,BufNewFile	log-*			setf markdown
-	au FileType				json			cal JSON()
-	au FileType				via				cal VimAnn()
-	au FileType				tico			cal TIco()
-	au FileType				javascript		cal JS()
-	au FileType				log_port		cal L_Port()
-	au FileType				markdown		cal Markdown()
-	au FileType				yaml			cal Yaml()
+	au FileType				json			cal Lang_json()
+	au FileType				via				cal Lang_via()
+	au FileType				tico			cal Lang_tico()
+	au FileType				javascript		cal Lang_javascript()
+	au FileType				markdown		cal Lang_markdown()
+	au FileType				yaml			cal Lang_yaml()
+	au FileType				nix				cal Lang_nix()
 aug END
 
-" Via
+fun! Lang_nix()
+    setl tabstop=2
+	setl softtabstop=2
+	setl expandtab
+endf
 
 let g:via_map = 'English'
 
-fun! VimAnn()
+fun! Lang_via()
 	setl	nofoldenable
 	setl	wrap
 
@@ -324,9 +327,7 @@ fun! VimAnn()
 	cal UpdAnn()
 endf
 
-" TIco
-
-fun! TIco()
+fun! Lang_tico()
 	" Syntax & Highlight
 
 	sy region	TIcoMain		matchgroup=TIcoMainDelimiter start=/<<</ end=/>>>/ contains=
@@ -359,174 +360,140 @@ fun! TIco()
 	hi TIcoConfig			ctermfg=White
 endf
 
-" JS
-
-fun! JS()
+fun! Lang_javascript()
 	" Indent
 
-		set foldmethod=syntax
+	set foldmethod=syntax
 
 	" Highlight
 
-		hi jsComment				ctermfg=21		cterm=italic
-		hi jsEnvComment				ctermfg=21		cterm=italic,underline
-		" hi jsParensIfElse			
-		" hi jsParensRepeat
-		" hi jsParensSwitch
-		" hi jsParensCatch
-		" hi jsCommentTodo
-		hi jsString					ctermfg=129
-		hi jsObjectKeyString		ctermfg=129
-		hi jsTemplateString			ctermfg=129
-		hi jsObjectStringKey		ctermfg=129
-		hi jsClassStringKey			ctermfg=129
-		hi jsTaggedTemplate			ctermfg=20
-		hi jsTernaryIfOperator		ctermfg=247
-		hi jsRegexpString			ctermfg=129
-		hi jsRegexpBoundary			ctermfg=129
-		hi jsRegexpQuantifier		ctermfg=46
-		hi jsRegexpOr				ctermfg=247
-		hi jsRegexpMod				ctermfg=129
-		hi jsRegexpBackRef			ctermfg=202
-		hi jsRegexpGroup			ctermfg=74
-		hi jsRegexpCharClass		ctermfg=74
-		hi jsCharacter				ctermfg=129
-		hi jsPrototype				ctermfg=205
-		hi jsConditional			ctermfg=37		cterm=bold
-		hi jsBranch					ctermfg=37
-		hi jsLabel					ctermfg=202
-		hi jsReturn					ctermfg=27		cterm=bold
-		hi jsRepeat					ctermfg=41		cterm=bold
-		hi jsDo						ctermfg=41		cterm=bold
-		hi jsStatement				ctermfg=27		cterm=bold
-		hi jsException				ctermfg=196		cterm=bold
-		hi jsTry					ctermfg=196		cterm=bold
-		hi jsFinally				ctermfg=196		cterm=bold
-		hi jsCatch					ctermfg=196		cterm=bold
-		hi jsAsyncKeyword			ctermfg=208		cterm=bold
-		hi jsForAwait				ctermfg=208		cterm=bold
-		hi jsArrowFunction			ctermfg=74
-		hi jsFunction				ctermfg=69		cterm=bold
-		hi jsGenerator				ctermfg=208		cterm=bold
-		hi jsArrowFuncArgs			ctermfg=254
-		hi jsFuncName				ctermfg=254
-		hi jsFuncCall				ctermfg=254
-		hi jsClassFuncName			ctermfg=254
-		hi jsObjectFuncName			ctermfg=254
-		hi jsArguments				ctermfg=254
-		hi jsError					ctermbg=197
-		hi jsParensError			ctermbg=197
-		hi jsOperatorKeyword		ctermfg=247		cterm=bold
-		hi jsOperator				ctermfg=247
-		hi jsOf						ctermfg=14		cterm=none
-		hi jsStorageClass			ctermfg=69		cterm=bold
-		hi jsClassKeyword			ctermfg=205		cterm=bold
-		hi jsExtendsKeyword			ctermfg=247		cterm=bold
-		hi jsThis					ctermfg=205
-		hi jsSuper					ctermfg=205
-		hi jsNan					ctermfg=46
-		hi jsNull					ctermfg=46
-		hi jsUndefined				ctermfg=49
-		hi jsNumber					ctermfg=46
-		hi jsFloat					ctermfg=46
-		hi jsBooleanTrue			ctermfg=49
-		hi jsBooleanFalse			ctermfg=49
-		hi jsObjectColon			ctermfg=247
-		hi jsNoise					ctermfg=247
-		hi jsDot					ctermfg=247
-		hi jsBrackets				ctermfg=74
-		hi jsParens					ctermfg=74
-		hi jsBraces					ctermfg=74
-		hi jsFuncBraces				ctermfg=74
-		hi jsFuncParens				ctermfg=74
-		hi jsClassBraces			ctermfg=74
-		hi jsClassNoise				ctermfg=247
-		hi jsIfElseBraces			ctermfg=74
-		hi jsTryCatchBraces			ctermfg=74
-		hi jsModuleBraces			ctermfg=74
-		hi jsObjectBraces			ctermfg=247
-		hi jsObjectSeparator		ctermfg=247
-		hi jsFinallyBraces			ctermfg=74
-		hi jsRepeatBraces			ctermfg=74
-		hi jsSwitchBraces			ctermfg=74
-		hi jsSpecial				ctermfg=99
-		hi jsTemplateBraces			ctermfg=99
-		hi jsGlobalObjects			ctermfg=118		cterm=underline
-		hi jsGlobalNodeObjects		ctermfg=14		cterm=bold
-		hi jsExceptions				ctermfg=196
-		hi jsBuiltins				ctermfg=118		cterm=underline
-		hi jsImport					ctermfg=14		cterm=bold
-		hi jsExport					ctermfg=14		cterm=bold
-		hi jsExportDefault			ctermfg=208
-		hi jsExportDefaultGroup		ctermfg=208
-		hi jsModuleAs				ctermfg=247
-		hi jsModuleComma			ctermfg=247
-		hi jsModuleAsterisk			ctermfg=208
-		hi jsFrom					ctermfg=14
-		hi jsDecorator				ctermfg=172
-		hi jsDecoratorFunction		ctermfg=172
-		hi jsParensDecorator		ctermfg=172
-		hi jsFuncArgOperator		ctermfg=247
-		hi jsFuncArgCommas			ctermfg=247
-		hi jsClassProperty			ctermfg=254
-		hi jsObjectShorthandProp	ctermfg=254
-		hi jsSpreadOperator			ctermfg=247
-		hi jsRestOperator			ctermfg=247
-		hi jsRestExpression			ctermfg=254
-		hi jsSwitchColon			ctermfg=247
-		hi jsClassMethodType		ctermfg=208		cterm=bold
-		hi jsObjectMethodType		ctermfg=208		cterm=bold
-		hi jsClassDefinition		ctermfg=205		cterm=bold
-		hi jsBlockLabel				ctermfg=202
-		hi jsBlockLabelKey			ctermfg=202
+	hi jsComment				ctermfg=21		cterm=italic
+	hi jsEnvComment				ctermfg=21		cterm=italic,underline
+	" hi jsParensIfElse			
+	" hi jsParensRepeat
+	" hi jsParensSwitch
+	" hi jsParensCatch
+	" hi jsCommentTodo
+	hi jsString					ctermfg=129
+	hi jsObjectKeyString		ctermfg=129
+	hi jsTemplateString			ctermfg=129
+	hi jsObjectStringKey		ctermfg=129
+	hi jsClassStringKey			ctermfg=129
+	hi jsTaggedTemplate			ctermfg=20
+	hi jsTernaryIfOperator		ctermfg=247
+	hi jsRegexpString			ctermfg=129
+	hi jsRegexpBoundary			ctermfg=129
+	hi jsRegexpQuantifier		ctermfg=46
+	hi jsRegexpOr				ctermfg=247
+	hi jsRegexpMod				ctermfg=129
+	hi jsRegexpBackRef			ctermfg=202
+	hi jsRegexpGroup			ctermfg=74
+	hi jsRegexpCharClass		ctermfg=74
+	hi jsCharacter				ctermfg=129
+	hi jsPrototype				ctermfg=205
+	hi jsConditional			ctermfg=37		cterm=bold
+	hi jsBranch					ctermfg=37
+	hi jsLabel					ctermfg=202
+	hi jsReturn					ctermfg=27		cterm=bold
+	hi jsRepeat					ctermfg=41		cterm=bold
+	hi jsDo						ctermfg=41		cterm=bold
+	hi jsStatement				ctermfg=27		cterm=bold
+	hi jsException				ctermfg=196		cterm=bold
+	hi jsTry					ctermfg=196		cterm=bold
+	hi jsFinally				ctermfg=196		cterm=bold
+	hi jsCatch					ctermfg=196		cterm=bold
+	hi jsAsyncKeyword			ctermfg=208		cterm=bold
+	hi jsForAwait				ctermfg=208		cterm=bold
+	hi jsArrowFunction			ctermfg=74
+	hi jsFunction				ctermfg=69		cterm=bold
+	hi jsGenerator				ctermfg=208		cterm=bold
+	hi jsArrowFuncArgs			ctermfg=254
+	hi jsFuncName				ctermfg=254
+	hi jsFuncCall				ctermfg=254
+	hi jsClassFuncName			ctermfg=254
+	hi jsObjectFuncName			ctermfg=254
+	hi jsArguments				ctermfg=254
+	hi jsError					ctermbg=197
+	hi jsParensError			ctermbg=197
+	hi jsOperatorKeyword		ctermfg=247		cterm=bold
+	hi jsOperator				ctermfg=247
+	hi jsOf						ctermfg=14		cterm=none
+	hi jsStorageClass			ctermfg=69		cterm=bold
+	hi jsClassKeyword			ctermfg=205		cterm=bold
+	hi jsExtendsKeyword			ctermfg=247		cterm=bold
+	hi jsThis					ctermfg=205
+	hi jsSuper					ctermfg=205
+	hi jsNan					ctermfg=46
+	hi jsNull					ctermfg=46
+	hi jsUndefined				ctermfg=49
+	hi jsNumber					ctermfg=46
+	hi jsFloat					ctermfg=46
+	hi jsBooleanTrue			ctermfg=49
+	hi jsBooleanFalse			ctermfg=49
+	hi jsObjectColon			ctermfg=247
+	hi jsNoise					ctermfg=247
+	hi jsDot					ctermfg=247
+	hi jsBrackets				ctermfg=74
+	hi jsParens					ctermfg=74
+	hi jsBraces					ctermfg=74
+	hi jsFuncBraces				ctermfg=74
+	hi jsFuncParens				ctermfg=74
+	hi jsClassBraces			ctermfg=74
+	hi jsClassNoise				ctermfg=247
+	hi jsIfElseBraces			ctermfg=74
+	hi jsTryCatchBraces			ctermfg=74
+	hi jsModuleBraces			ctermfg=74
+	hi jsObjectBraces			ctermfg=247
+	hi jsObjectSeparator		ctermfg=247
+	hi jsFinallyBraces			ctermfg=74
+	hi jsRepeatBraces			ctermfg=74
+	hi jsSwitchBraces			ctermfg=74
+	hi jsSpecial				ctermfg=99
+	hi jsTemplateBraces			ctermfg=99
+	hi jsGlobalObjects			ctermfg=118		cterm=underline
+	hi jsGlobalNodeObjects		ctermfg=14		cterm=bold
+	hi jsExceptions				ctermfg=196
+	hi jsBuiltins				ctermfg=118		cterm=underline
+	hi jsImport					ctermfg=14		cterm=bold
+	hi jsExport					ctermfg=14		cterm=bold
+	hi jsExportDefault			ctermfg=208
+	hi jsExportDefaultGroup		ctermfg=208
+	hi jsModuleAs				ctermfg=247
+	hi jsModuleComma			ctermfg=247
+	hi jsModuleAsterisk			ctermfg=208
+	hi jsFrom					ctermfg=14
+	hi jsDecorator				ctermfg=172
+	hi jsDecoratorFunction		ctermfg=172
+	hi jsParensDecorator		ctermfg=172
+	hi jsFuncArgOperator		ctermfg=247
+	hi jsFuncArgCommas			ctermfg=247
+	hi jsClassProperty			ctermfg=254
+	hi jsObjectShorthandProp	ctermfg=254
+	hi jsSpreadOperator			ctermfg=247
+	hi jsRestOperator			ctermfg=247
+	hi jsRestExpression			ctermfg=254
+	hi jsSwitchColon			ctermfg=247
+	hi jsClassMethodType		ctermfg=208		cterm=bold
+	hi jsObjectMethodType		ctermfg=208		cterm=bold
+	hi jsClassDefinition		ctermfg=205		cterm=bold
+	hi jsBlockLabel				ctermfg=202
+	hi jsBlockLabelKey			ctermfg=202
 
-		hi jsDestructuringBraces		ctermfg=74
-		hi jsDestructuringProperty		ctermfg=254
-		hi jsDestructuringAssignment	ctermfg=254
-		hi jsDestructuringNoise			ctermfg=247
-
-		" hi jsCommentFunction
-		" hi jsCommentClass
-		" hi jsCommentIfElse
-		" hi jsCommentRepeat
-
-		" hi jsDomErrNo
-		" hi jsDomNodeConsts
-		" hi jsDomElemAttrs
-		" hi jsDomElemFuncs
-
-		" hi jsHtmlEvents
-		" hi jsHtmlElemAttrs
-		" hi jsHtmlElemFuncs
-
-		" hi jsCssStyles
+	hi jsDestructuringBraces		ctermfg=74
+	hi jsDestructuringProperty		ctermfg=254
+	hi jsDestructuringAssignment	ctermfg=254
+	hi jsDestructuringNoise			ctermfg=247
 endf
 
-" JSON
-
-fun! JSON()
+fun! Lang_json()
 	syntax match Comment +\/\/.\+$+
 endf
 
-" Log Port
-
-fun! L_Port()
-	" Syntax 
-
-		sy match PortType	/\(^\[\)\@<=[\/>*]\(]\)\@=/
-		sy match PortNo		/\(^\[[\/>*]] \)\@<=\d\+/
-
-	" Highlight
-
-		hi PortType			ctermfg=Yellow
-		hi PortNo			ctermfg=LightGreen
-endf
-
-fun! Markdown()
+fun! Lang_markdown()
 	inor <C-S>now <ESC>:r! node -e 'console.log(new Date().toString().replace(/ \(.*/,""))'<CR>i<BS><ESC>A
 endf
 
-fun! Yaml()
+fun! Lang_yaml()
 	inor <C-S>now <ESC>:r! node -e 'console.log(new Date().toISOString())'<CR>i<BS><ESC>A
 endf
 
