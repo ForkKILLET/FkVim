@@ -16,8 +16,8 @@
 	nnor	VE :vnew $VIMRC<CR> 
 	nnor	VS :source $VIMRC<CR>
 
-	set		hlsearch
-	set		incsearch
+	setl	hlsearch
+	setl	incsearch
 	nnor	<silent> <ESC>f :set hlsearch!<CR>
 	nnor	fiw yiw/\<<C-R>"\><CR>
 	nnor	siw yiw:%s/\<<C-R>"\>/
@@ -30,7 +30,7 @@
 	nnor	SS :w !sudo tee %<CR>
 	nnor	Sq :wq<CR>
 
-	set		undodir=$VIMFILES/undodir
+	setl	undodir=$VIMFILES/undodir
 
 	nnor	Sg :w<CR>:!gulp<CR>
 	nnor	Sgg :w<CR>:!gulp 
@@ -47,12 +47,12 @@
 
 	nnor	St :w<CR>:!tsc<CR>
 
-	set		shiftwidth=4
-	set		tabstop=4
-	set		softtabstop=4
-	set		foldmethod=indent
+	setl	shiftwidth=4
+	setl	tabstop=4
+	setl	softtabstop=4
+	setl	foldmethod=indent
 
-	set		nowrap
+	setl	nowrap
 	nnor	<silent> <ESC>w :set wrap!<CR>
 
 	nnor	c'	mqF"r'f"r'`q
@@ -68,6 +68,11 @@
 	nnor	c$	F`dt+df<SPACE>i${<ESC>f`xdT+dF<SPACE>i}<ESC>
 	nmap	c$'	mTF'c"c`f'lc"c``Tc$`T
 	nmap	c$"	mTF"c`f"lc``Tc$`T
+
+	nmap	c{[	[{r[]}r]
+	nmap	c[{	[[r{]]r}
+	nmap	c([	[(r[])r]
+	nmap	c[(	[[r(]]r)
 
 	nmap	d()	mpF(xf)x`ph
 
