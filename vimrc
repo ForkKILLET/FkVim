@@ -57,7 +57,7 @@
 
 	nnor	c'	mqF"r'f"r'`q
 	nnor	c"	mqF'r"f'r"`q
-	nnor	c`	mqF"r`f"r``q
+	nnor	c`	mqF'r`f'r``q
 
 	nnor	cx' mqF'xf'x`ql
 	nnor	cx"	mqF"xf"x`ql
@@ -172,7 +172,7 @@ aug FtDetect | au!
 aug END
 
 fun! Lang_nix()
-    setl tabstop=2
+	setl tabstop=2
 	setl softtabstop=2
 	setl expandtab
 endf
@@ -241,10 +241,10 @@ fun! Lang_via()
 	cal _umap('NextAnnInl', 'f(', 'ni')
 	cal _umap('PrevAnnInl', 'F(', 'ni')
 
-  	cal _umap('EscBang', '!', 'i')
-  	cal _umap('EscBang', ',', 'i')
-  	cal _umap('EscBang', '<', 'i')
-  	cal _umap('EscBang', '>', 'i')
+	cal _umap('EscBang', '!', 'i')
+	cal _umap('EscBang', ',', 'i')
+	cal _umap('EscBang', '<', 'i')
+	cal _umap('EscBang', '>', 'i')
 	
 	cal _umap('OpenAnnWin', ':lop<CR><C-W>k', 'ni', { 'silent': 1 })
 	cal _umap('UpdOpenAnnWin', ':cal UpdAnn()<CR>:lop<CR>:cal SynAnn()<CR><C-W>k', 'ni', { 'silent': 1 })
